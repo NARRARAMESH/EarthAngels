@@ -1,0 +1,97 @@
+/*font-family: 'Cinzel', serif;
+font-family: 'Cinzel Decorative', cursive;
+font-family: 'Josefin Sans', sans-serif;*/
+
+.App {
+  text-align: center;
+  background-image: url('./images/sky.jpg');
+}
+
+.sidebarButton {
+  background-color: #5DBCD2;
+  border: none;
+  height: 43px;
+  width: 220px;
+  color: white;
+  font-size: 19px;
+  letter-spacing: .4px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding-right: 10px;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.sidebarButton:hover {
+  background-color: #1C3285;
+}
+
+
+.eventTextArea::-webkit-input-placeholder {
+  color: #bbb;
+  font-size: 16px;
+  padding-top: 5px;
+  padding-left: 0px;
+  font-family: 'arial';
+  font-weight: lighter;
+}
+
+.eventTextArea::-moz-placeholder {
+  color: #bbb;
+  font-size: 16px;
+  padding-left: 0px;
+  font-family: 'arial';
+  font-weight: lighter;
+}
+
+
+::-webkit-input-placeholder {
+  color: #ccc;
+  margin-top: 20px;
+  font-size: 25px;
+  padding-left: 50px;
+  font-family: 'Cinzel', serif;
+  font-weight: lighter;
+}
+
+::-moz-placeholder {
+  color: #36cee2;
+  margin-top: 10px;
+  font-size: 13px;
+  padding-left: 34px;
+  font-family: 'arial';
+  font-weight: lighter;
+}
+
+
+hr {
+  border-top: 1px solid white;
+  margin-top: 34px;
+}
+
+p {
+  margin-left: 40px;
+  text-align: left;
+  font-size: 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bold;
+}
+
+
+h2, h3, h4 {
+  color: #1C3285;
+  font-family: 'Cinzel Decorative', cursive;
+}
+
+input, select, textarea {
+    padding-top: 10px;
+    padding-left: 15px;
+    font-size: 24px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+
+/*
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}*/

@@ -1,0 +1,66 @@
+{
+"users": {
+  "uID": {
+    "username": "",
+    "avatar": "",
+    "toDo": {
+         "itemID": {
+            "text": "",
+            "complete": "boolean",
+            "public": "boolean",
+            "timestamp": ""
+           }
+      },
+     "journal": {
+          "entryID": {
+              "text": "",
+              "time": "",
+              "public": ""
+            }
+      },
+      "events": {
+          "attending": {"eventID": ""},
+          "created": {"eventID": ""}
+      }
+  }
+},
+"feed": {
+  "postID": {
+      "avatar": "",
+      "username": "",
+      "timestamp": "",
+      "text": "",
+      "image": "",
+      "likeCount": "number"
+  }
+},
+"likes": {
+  "postID": {
+      "likes": {
+          "likeID": {"likedBy": ""}
+      }
+  }
+},
+"events": {
+    "eventID": {
+      "createdBy": "uID",
+      "title": "",
+      "desc": "",
+      "time": "",
+      "location": ""
+    }
+},
+"comments": {
+    "eventID": {
+        "commentID": {
+            "avatar": "",
+            "username": "",
+            "text": "",
+            "timestamp": "",
+            "likes": {
+                "likeID": {"likedBy": ""}
+            }
+        }
+     }
+}
+}
