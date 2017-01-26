@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../App.css';
-// import base from '../config.js'
+import base from '../config.js'
 import Paper from 'material-ui/Paper';
 import FilterDrama from 'material-ui/svg-icons/image/filter-drama';
 import IconButton from 'material-ui/IconButton';
@@ -73,8 +73,6 @@ class ShareBox extends Component {
   }
 
 
-
-
 handleChange (event) {
   this.setState({ text: event.target.value })
 }
@@ -102,33 +100,47 @@ overflowAlert () {
 }
 
 
-// post () {
-//   let post= {
-//     username: this.props.uid,
-//     text: this.input.value.trim(),
-//     avatar: "",
-//     image: "",
-//     likeCount: "",
-//     timeStamp: "",
-//   }
-// }
+post () {
+  console.log("username is", this.props.username)
+  if (this.textArea.value === "") {
+    alert('Please type about your kindness')
+  } else {
+    let post= {
+      username: this.props.username,
+      text: this.textArea.value.trim(),
+      avatar: this.props.avatar,
+      image: "",
+      likeCount: "",
+      timeStamp: ""
+    }
+  base.update(`feed/${post.username}`, {
+    data: post
+  })
+  this.textArea.value = ""
+ }
+}
 
     render() {
         return (
           <div style={style.Div}>
+
              {this.overflowAlert()}
+
              <textarea
              style={style.Input}
              onChange={this.handleChange}
-             placeholder="👐  Share about your Kindess... 👐"
+             ref={textArea => this.textArea = textArea}
+             placeholder="👐  Share about Your Kindess . . . 👐"
              />
+
              <span style={style.Characters}>{this.remainingCharacters()}</span>
+
              <IconButton
                 iconStyle={style.PostButton}
                 tooltipPosition="top-center"
                 tooltip="post"
              >
-                  <FilterDrama />
+                  <FilterDrama onClick={this.post.bind(this)}/>
              </IconButton>
           </div>
         )
@@ -140,5 +152,3 @@ export default ShareBox;
 // <IconButton iconStyle={style.PhotoButton} tooltip="add photo" tooltipPosition="top-center"><PhotoCamera /></IconButton>
 
 // disabled={this.remainingCharacters() === 140} // for post button
-
-// <FilterDrama onClick={this.post()}/>

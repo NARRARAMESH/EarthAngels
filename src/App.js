@@ -106,6 +106,8 @@ class App extends Component {
 
 
   render() {
+    var childrenWithProps = React.cloneElement(this.props.children, {
+      uid: this.state.uid, username: this.state.username, avatar: this.state.avatar})
     return (
       <div className="App">
 
@@ -132,9 +134,11 @@ class App extends Component {
                  uid={this.state.uid}
         />
 
-        <ToDo toDo={this.state.toDo} toggleToDo={this.toggleToDo} uid={this.state.uid}/>
+        <ToDo toDo={this.state.toDo} toggleToDo={this.toggleToDo} uid={this.state.uid} username={this.state.username} avatar={this.state.avatar}/>
         <Journal journal={this.state.journal} toggleJournal={this.toggleJournal} uid={this.state.uid}/>
-        {this.props.children}
+
+        {childrenWithProps}
+
 
       </div>
     );

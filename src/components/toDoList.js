@@ -12,6 +12,9 @@ import IconButton from 'material-ui/IconButton';
 
 const style = {
   Text: {
+    marginTop: 20,
+    width: 300,
+    height: 50,
     fontSize: 24,
     fontFamily: 'Josefin Sans'
   },
@@ -37,7 +40,7 @@ const style = {
   Toggle: {
     paddingTop: 9,
     paddingBottom: 3,
-    marginLeft: 260,
+    marginLeft: 250,
   },
   Delete: {
     color: '#f79e9e',
@@ -64,7 +67,7 @@ const style = {
     textAlign: 'center',
     lineHeight: 1.4,
     fontSize: 16,
-    letterSpacing: .5,
+    letterSpacing: .5
   }
 }
 
@@ -123,11 +126,13 @@ class ToDoList extends Component {
     var item = this.state.todos.filter(item => item === clickedItem)
     base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
       data: {complete: true},
-      then() {
-      base.update('feed', {
-        data: {username: this.state.username, text: item.text}
-    })
-    }
+      then: () => {
+        if (item[0].public === true) {
+        base.update(`feed/${item[0].key}`, {
+          data: {username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: ""}
+      })
+     }
+   }
   })
 }
 
@@ -144,6 +149,7 @@ class ToDoList extends Component {
     return (
       <div>
             <input style={style.Text}
+            placeholder="My acts of kindess are . . ."
             ref={input => this.input = input}
             onKeyUp={this.addItem.bind(this)}/>
             <ul>
