@@ -41,7 +41,7 @@ class ToDo extends Component {
             <Drawer
                 className="toDoList"
                 docked={true}
-                width={360}
+                width={350}
                 open={this.props.toDo}
                 openSecondary={true}
                 onRequestChange={(left) => this.setState({left})}
@@ -56,7 +56,7 @@ class ToDo extends Component {
                 </IconButton>
               </AppBar>
 
-              <ToDoList uid={this.props.uid}/>
+              <ToDoList uid={this.props.uid} username={this.props.username} avatar={this.props.avatar}/>
 
             </Drawer>
         </MuiThemeProvider>

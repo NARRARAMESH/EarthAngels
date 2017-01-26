@@ -11,7 +11,7 @@ import './index.css';
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-    <IndexRoute component={Login} />
+      <IndexRoute component={Login} />
       <Route path="/feedofKindness" component={Feed} />
       <Route path="/events" component={Events} />
     </Route>

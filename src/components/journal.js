@@ -7,6 +7,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import CloudDownload from 'material-ui/svg-icons/file/cloud-download';
 import Close from 'material-ui/svg-icons/navigation/close';
+import JournalArchive from './journalArchive.js';
 
 
 const style = {
@@ -32,8 +33,7 @@ const style = {
     borderRadius: 11,
     fontSize: 10,
     boxShadow: '1px 1.5px 2px  gray',
-    marginTop: -22,
-    marginLeft: -3,
+    marginLeft: 16,
   },
   CloseButton: {
     color: 'white',
@@ -43,6 +43,7 @@ const style = {
     borderRadius: 120,
   }
 };
+
 
 
 class Journal extends Component {
@@ -64,6 +65,21 @@ componentWillReceiveProps(props) {
     context: this
     })
   }
+}
+
+saveEntry () {
+  if (this.textArea.value === "") {
+    alert('Cannot save an empty journal entry')
+  } else {
+  let entry = {
+    text: this.textArea.value.trim(),
+    date: new Date()
+  }
+  base.update(`users/${this.props.uid}/journal/${entry.date}`, {
+    data: entry
+  })
+  this.textArea.value = ""
+ }
 }
 
   render() {
@@ -88,11 +104,15 @@ componentWillReceiveProps(props) {
                 <Close onClick={this.props.toggleJournal}/>
               </IconButton>
             </AppBar>
-              <textarea style={style.Text}/>
+              <textarea style={style.Text}
+                ref={textArea => this.textArea = textArea}
+              />
 
-                <IconButton iconStyle={style.SaveButton} tooltip="save" tooltipPosition="bottom-center">
-                  <CloudDownload />
+                <IconButton iconStyle={style.SaveButton} tooltip="save" tooltipPosition="top-right">
+                  <CloudDownload onClick={this.saveEntry.bind(this)}/>
                 </IconButton>
+
+                <JournalArchive uid={this.props.uid}/>
             </Drawer>
         </MuiThemeProvider>
       </div>
@@ -101,5 +121,3 @@ componentWillReceiveProps(props) {
 }
 
 export default Journal;
-
-// <RaisedButton className="journalSave" onClick={this.closeJournal} label="save" />
