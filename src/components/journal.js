@@ -31,7 +31,6 @@ const style = {
     width: 55,
     height: 30,
     borderRadius: 11,
-    fontSize: 10,
     boxShadow: '1px 1.5px 2px  gray',
     marginLeft: 16,
   },

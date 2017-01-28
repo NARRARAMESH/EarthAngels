@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import base from './config.js'
+import base from './config.js';
 import './App.css';
-import { hashHistory } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
-import ToDo from './components/todo.js'
-import Journal from './components/journal.js'
-import Login from './components/login.js'
-import Sidebar from './components/sidebar.js'
+import ToDo from './components/todo.js';
+import Journal from './components/journal.js';
+import Login from './components/login.js';
+import Sidebar from './components/sidebar.js';
 
 
 injectTapEventPlugin()
@@ -35,14 +34,11 @@ class App extends Component {
     uid: "",
     username: "",
     avatar: "",
-    // open: false,
     logInOpen: false,
     toDo: false,
     journal: false
   })
 }
-
-
 
   componentDidMount () {
     this.unsubscribe = base.onAuth(this.authStateChanged.bind(this))
@@ -50,24 +46,20 @@ class App extends Component {
 
 
   logIn () {
-    console.log('this is', this)
     base.authWithOAuthPopup('google', this.authStateChanged.bind(this))
-
-    .then(() => {
-      hashHistory.push('/feedofKindness')
-    })
   }
 
   logOut(){
     base.unauth()
     this.setState({
-      user: ""
+      user: {}
     })
   }
 
 
   authStateChanged (user) {
-     this.setState({
+    if (user) {
+       this.setState({
        uid: user.uid,
        username: user.displayName,
        avatar: user.photoURL
@@ -76,7 +68,6 @@ class App extends Component {
        context: this,
        then(data){
          if (data === null) {
-           console.log('user is', user)
            base.post(`users/${user.uid}`, {
              data: {uID: user.uid},
            })
@@ -87,6 +78,11 @@ class App extends Component {
          }
        }
      })
+   } else {
+     this.setState({
+     user: {}
+   })
+   }
   }
 
   componentWillUnmount () {
@@ -104,10 +100,27 @@ class App extends Component {
   toggleJournal = () => this.setState({journal: !this.state.journal});
   closeJournal = () => this.setState({journal: false});
 
+  renderButton() {
+    if (this.state.uid === "") {
+      return <FlatButton
+              style={style.FlatButton}
+              onTouchTap={this.logInOpen}
+              label="Login"
+            />
+    } else {
+      return <FlatButton
+        style={style.FlatButton}
+        onTouchTap={this.logOut}
+        label="Logout"
+      />
+    }
+  }
+
 
   render() {
     var childrenWithProps = React.cloneElement(this.props.children, {
       uid: this.state.uid, username: this.state.username, avatar: this.state.avatar})
+
     return (
       <div className="App">
 
@@ -117,11 +130,8 @@ class App extends Component {
               title="Earth Angels"
               showMenuIconButton={false}
             >
-            <FlatButton
-              style={style.FlatButton}
-              onTouchTap={this.logInOpen}
-              label="Login"
-            />
+            {this.renderButton()}
+
             </AppBar>
         </MuiThemeProvider>
 

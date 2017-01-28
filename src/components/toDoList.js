@@ -121,6 +121,14 @@ class ToDoList extends Component {
     })
   }
 
+  editItem (clickedItem) {
+    console.log('onblur works')
+    var item = this.state.todos.filter(item => item === clickedItem)
+    base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
+      data: {text: item[0].text}
+    })
+  }
+
 
   completeItem(clickedItem) {
     var item = this.state.todos.filter(item => item === clickedItem)
@@ -159,7 +167,7 @@ class ToDoList extends Component {
                             <div>
                                 <Toggle style={style.Toggle} onToggle={this.toggleItem.bind(this, item)} />
                                 <Checkbox iconStyle={style.Check} onCheck={this.completeItem.bind(this, item)} label="✓ to complete" labelStyle={style.CheckLabel}/>
-                                <p style={style.ItemText}>{item.text}</p>
+                                <p tabIndex contentEditable="true" onBlur={this.editItem.bind(this, item)} style={style.ItemText}>{item.text}</p>
                                 <IconButton iconStyle={style.Delete}>
                                   <Delete  onClick={this.deleteItem.bind(this, item)}/>
                                 </IconButton>

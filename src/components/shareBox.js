@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../App.css';
-import base from '../config.js'
+// import base from '../config.js'
 import Paper from 'material-ui/Paper';
 import FilterDrama from 'material-ui/svg-icons/image/filter-drama';
 import IconButton from 'material-ui/IconButton';
@@ -31,7 +31,8 @@ const style = {
     fontSize: 18,
     textAlign: 'center',
     padding: 10,
-    marginBottom: -35
+    marginBottom: -35,
+    backgroundColor: '#f79e9e'
   },
   PostButton: {
     color: 'white',
@@ -99,13 +100,11 @@ overflowAlert () {
   }
 }
 
-
 post () {
-  console.log("username is", this.props.username)
   if (this.textArea.value === "") {
     alert('Please type about your kindness')
   } else {
-    let post= {
+    let post = {
       username: this.props.username,
       text: this.textArea.value.trim(),
       avatar: this.props.avatar,
@@ -113,35 +112,38 @@ post () {
       likeCount: "",
       timeStamp: ""
     }
-  base.update(`feed/${post.username}`, {
-    data: post
-  })
-  this.textArea.value = ""
- }
+    this.textArea.value = ""
+    this.props.newArray(post)
+  }
 }
+
+
 
     render() {
         return (
-          <div style={style.Div}>
+          <div>
+            <div style={style.Div}>
 
-             {this.overflowAlert()}
+               {this.overflowAlert()}
 
-             <textarea
-             style={style.Input}
-             onChange={this.handleChange}
-             ref={textArea => this.textArea = textArea}
-             placeholder="👐  Share about Your Kindess . . . 👐"
-             />
+               <textarea
+               style={style.Input}
+               onChange={this.handleChange}
+               ref={textArea => this.textArea = textArea}
+               placeholder="👐  Share about Your Kindess . . . 👐"
+               />
 
-             <span style={style.Characters}>{this.remainingCharacters()}</span>
+               <span style={style.Characters}>{this.remainingCharacters()}</span>
 
-             <IconButton
-                iconStyle={style.PostButton}
-                tooltipPosition="top-center"
-                tooltip="post"
-             >
-                  <FilterDrama onClick={this.post.bind(this)}/>
-             </IconButton>
+               <IconButton
+                  iconStyle={style.PostButton}
+                  tooltipPosition="top-center"
+                  tooltip="post"
+               >
+                    <FilterDrama onClick={this.post.bind(this)} />
+               </IconButton>
+            </div>
+
           </div>
         )
     }

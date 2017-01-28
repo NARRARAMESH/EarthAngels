@@ -3,8 +3,8 @@ import '../App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
+// import MenuItem from 'material-ui/MenuItem';
+// import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import Close from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
@@ -55,11 +55,8 @@ class Login extends Component {
                   <IconButton iconStyle={style.CloseButton} onTouchTap={this.props.logInClose}>
                       <Close />
                   </IconButton>
-
                 </div>
-                <MenuItem style={style.MenuItem}><TextField hintText="username" /></MenuItem>
-                <MenuItem><TextField hintText="email" /></MenuItem>
-                <MenuItem style={style.MenuItem2}><TextField hintText="password" /></MenuItem>
+
               </Menu>
 
               <RaisedButton
@@ -81,3 +78,8 @@ class Login extends Component {
 }
 
 export default Login;
+
+//
+// <MenuItem style={style.MenuItem}><TextField hintText="username" /></MenuItem>
+// <MenuItem><TextField hintText="email" /></MenuItem>
+// <MenuItem style={style.MenuItem2}><TextField hintText="password" /></MenuItem>

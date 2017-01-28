@@ -11,7 +11,7 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 
 const style = {
   Paper: {
-    height: 800,
+    height: 1000,
     width: 600,
     marginLeft: 250,
     textAlign: 'center',
@@ -22,7 +22,7 @@ const style = {
     color: '#c63535'
   },
   Feed: {
-    height: 800
+    height: 1000
   },
   Avatar: {
     float: 'left',
@@ -54,17 +54,23 @@ class Feed extends Component {
     }
   }
 
-  componentDidMount (){
-    base.listenTo(`feed`, {
+  componentDidMount () {
+    base.syncState(`feed`, {
       context: this,
-      asArray: true,
-      then: (data) => {
-        this.setState({
-          feed: data
-        })
-      }
+      state: 'feed',
+      asArray: true
     })
   }
+
+
+  newArray (post) {
+      let newFeedArray = this.state.feed.concat(post)
+      this.setState({
+        feed: newFeedArray
+      })
+   }
+
+
 
 
   render() {
@@ -74,10 +80,10 @@ class Feed extends Component {
       <div style={style.Feed}>
         <MuiThemeProvider>
             <Paper style={style.Paper}>
-            <ShareBox />
+            <ShareBox uid={this.props.uid} username={this.props.username} avatar={this.props.avatar} newArray={this.newArray.bind(this)} />
 
             <InfiniteScroll
-              height={550}
+              height={750}
               endMessage={<Favorite/>}
               loader={<h4>Loading...</h4>}>
 

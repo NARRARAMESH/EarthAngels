@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import base from '../config.js'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -14,17 +15,21 @@ import Search from 'material-ui/svg-icons/action/search';
 import TimePicker from 'material-ui/TimePicker';
 import DatePicker from 'material-ui/DatePicker';
 import Close from 'material-ui/svg-icons/navigation/close';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Favorite from 'material-ui/svg-icons/action/favorite';
+import { Link } from 'react-router'
+
 
 
 
 
 const style = {
   Events: {
-    height: 800
+    height: 1000
   },
   Paper: {
-    height: 600,
-    width: 500,
+    height: 800,
+    width: 600,
     marginLeft: 250,
     marginTop: 60,
     textAlign: 'center',
@@ -70,6 +75,16 @@ const style = {
     height: 40,
     backgroundColor: '#1C3285',
     borderRadius: 120
+  },
+  List: {
+    listStyleType: 'none'
+  },
+  Location: {
+    textAlign: 'center',
+    marginLeft: -10
+  },
+  Link: {
+    textDecoration: 'none'
   }
 };
 
@@ -78,11 +93,53 @@ class Events extends Component {
   constructor () {
     super()
     this.state=({
-      dialog: false
+      dialog: false,
+      events: []
+    })
+  }
+
+  componentDidMount (){
+    base.listenTo(`events`, {
+      context: this,
+      asArray: true,
+      then: (data) => {
+        this.setState({
+          events: data
+        })
+      }
     })
   }
 
   toggleEvent = () => this.setState({ dialog: !this.state.dialog })
+
+
+  createEvent () {
+    if (this.title.value === "" || this.desc.value === "" || this.date.value === "" ||
+        this.time.value === "" || this.location.value === "") {
+      alert('Input fields cannot be blank')
+    } else {
+      let event= {
+        createdBy: this.props.username,
+        title: this.title.input.value.trim(),
+        desc: this.desc.value.trim(),
+        date: this.date.refs.input.input.value.trim(),
+        time: this.time.refs.input.input.value.trim(),
+        location: this.location.input.value.trim()
+      }
+    base.update(`events/${event.title}`, {
+      data: event
+    })
+    base.update(`users/${this.props.uid}/events/created/${event.title}`, {
+      data: {date: event.date, time: event.time, location: event.location}
+    })
+    this.title.value = ""
+    this.desc.value = ""
+    this.date.value = ""
+    this.time.value = ""
+    this.location.value = ""
+   }
+   this.setState({ dialog: false })
+  }
 
 
   render() {
@@ -93,7 +150,7 @@ class Events extends Component {
             <Paper style={style.Paper} zDepth={2}>
                 <AppBar
                   style={style.AppBar}
-                  title="Let's heal the world"
+                  title="Kind Events near you"
                   iconElementLeft={<IconButton><Search /></IconButton>}
                 >
                 <IconButton tooltip="Create Event"
@@ -102,6 +159,29 @@ class Events extends Component {
                     <ContentAdd />
                 </IconButton>
                 </AppBar>
+
+                <InfiniteScroll
+                  height={700}
+                  endMessage={<Favorite/>}
+                  loader={<h4>Loading...</h4>}>
+
+                <ul style={style.List}>
+                  {this.state.events.map((event, index) => {
+                      return <li key={index}>
+                                <div >
+                                <Link style={style.Link} to={`/events/${event.title}`} activeClassName="active">
+                                  <h3>{event.title}</h3>
+                                  <span>{event.date} at</span><span> {event.time}</span>
+                                  <p style={style.Location}>{event.location}</p>
+                                  <hr />
+                                </Link>
+                                </div>
+                             </li>
+                    })
+                  }
+                  </ul>
+                  </InfiniteScroll>
+
             </Paper>
         </MuiThemeProvider>
 
@@ -116,19 +196,50 @@ class Events extends Component {
 
               </div>
               <Menu>
-                <MenuItem style={style.MenuItem}><TextField style={style.TextField} hintText="Event title"/></MenuItem>
-                <MenuItem style={style.MenuItem}><textarea style={style.TextArea} className="eventTextArea" placeholder="Description..."/></MenuItem>
-                <MenuItem><DatePicker  hintText="Select date" mode="portrait"/></MenuItem>
-                <MenuItem><TimePicker  hintText="Select time"/></MenuItem>
-                <MenuItem style={style.MenuItem2}><TextField style={style.TextField} hintText="Location"/></MenuItem>
+                <MenuItem style={style.MenuItem}>
+                  <TextField
+                  ref={input => this.title = input}
+                   style={style.TextField}
+                   hintText="Event title"/>
+                </MenuItem>
+
+                <MenuItem style={style.MenuItem}>
+                    <textarea style={style.TextArea}
+                     ref={textArea => this.desc = textArea}
+                     className="eventTextArea" placeholder="Description..."/>
+                </MenuItem>
+
+                <MenuItem>
+                  <DatePicker
+                   ref={input => this.date = input}
+                   hintText="Select date" mode="portrait"/>
+                </MenuItem>
+
+                <MenuItem>
+                  <TimePicker
+                   ref={input => this.time = input}
+                   hintText="Select time"/>
+                </MenuItem>
+
+                <MenuItem style={style.MenuItem2}>
+                 <TextField
+                  ref={input => this.location = input}
+                  style={style.TextField}
+                  hintText="Location address"/></MenuItem>
               </Menu>
-              <RaisedButton style={style.Button} onClick={this.toggleEvent} label='Create' />
+              <RaisedButton style={style.Button} onClick={this.createEvent.bind(this)} label='Create' />
 
             </Dialog>
         </MuiThemeProvider>
+
+        {this.props.children}
+
       </div>
     );
   }
 }
 
 export default Events;
+
+
+// onClick={this.viewEvent.bind(this, event)}

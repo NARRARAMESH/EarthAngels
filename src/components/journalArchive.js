@@ -40,7 +40,7 @@ const style = {
     marginLeft: 645
   },
   Dialog: {
-    width: 700,
+    width: 700
   },
   Menu: {
     backgroundColor: '#1C3285',
@@ -51,6 +51,11 @@ const style = {
     marginLeft: '-24px',
     color: 'white'
   },
+  EntryTextDiv: {
+    // maxWidth: 550,
+    // overflowX: 'hidden',
+    // wordWrap: 'break-word'
+  },
   EntryText: {
     paddingTop: 50,
     paddingBottom: 100,
@@ -60,7 +65,8 @@ const style = {
     textJustify: 'inter-word',
     fontFamily: 'Josefin Sans',
     lineHeight: 1.4,
-    color: 'black'
+    color: 'black',
+    whiteSpace: 'pre'
   }
 };
 
@@ -76,7 +82,6 @@ class JournalArchive extends Component {
 }
 
   componentWillReceiveProps(props) {
-    console.log('this.props.uid is', this.props.uid)
     base.listenTo(`users/${this.props.uid}/journal`, {
       context: this,
       asArray: true,
@@ -90,11 +95,7 @@ class JournalArchive extends Component {
 
   expandEntry (clickedEntry) {
     var entry = this.state.archive.filter(entry => entry === clickedEntry)
-    // .then(() => {
-    console.log('entry is', entry)
       this.setState({ dialog: !this.state.dialog, entry: entry[0] })
-      console.log('this.state.entry is', this.state.entry)
-    // })
   }
 
   closeEntry = () => this.setState({ dialog: !this.state.dialog })
@@ -141,7 +142,9 @@ class JournalArchive extends Component {
               height={600}
               endMessage={<Favorite/>}
               loader={<h4>Loading...</h4>}>
-            <p style={style.EntryText}>{this.state.entry.text}</p>
+            <div style={style.EntryTextDiv}>
+              <p style={style.EntryText}>{this.state.entry.text}</p>
+            </div>
             </InfiniteScroll>
 
 
