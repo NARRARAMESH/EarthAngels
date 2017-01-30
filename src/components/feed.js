@@ -27,6 +27,7 @@ const style = {
   Avatar: {
     float: 'left',
     marginRight: 25,
+    marginBottom: 60,
     width: 45,
     height: 45,
     borderRadius: 10,
@@ -41,7 +42,19 @@ const style = {
   },
   PostText: {
     fontFamily: 'Josefin Sans',
-    fontSize: 20
+    fontSize: 20,
+    marginRight: 100,
+    textAlign: 'justify',
+    lineHeight: 1.3
+  },
+  Time: {
+    color: '#ccc',
+    fontFamily: 'verdana',
+    fontSize: 12,
+    float: 'right',
+    marginRight: 40,
+    // marginRight: 40, //this is what i was playing with when avatars stopped loading
+    fontWeight: 'lighter'
   }
 };
 
@@ -71,6 +84,44 @@ class Feed extends Component {
    }
 
 
+  timeSince (date) {
+    if (typeof date !== 'object') {
+        date = new Date(date);
+    }
+    var seconds = Math.floor((new Date() - date) / 1000);
+    var intervalType;
+    var interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) {
+        intervalType = 'year';
+    } else {
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            intervalType = 'month';
+        } else {
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) {
+                intervalType = 'day';
+            } else {
+                interval = Math.floor(seconds / 3600);
+                if (interval >= 1) {
+                    intervalType = "hour";
+                } else {
+                    interval = Math.floor(seconds / 60);
+                    if (interval >= 1) {
+                        intervalType = "minute";
+                    } else {
+                        interval = seconds;
+                        intervalType = "second";
+                    }
+                }
+            }
+        }
+    }
+    if (interval > 1 || interval === 0) {
+        intervalType += 's';
+    }
+    return interval + ' ' + intervalType + ' ago';
+}
 
 
   render() {
@@ -91,6 +142,7 @@ class Feed extends Component {
               {feedReverse.map((post, index) => {
                   return <li key={index}>
                             <div>
+                              <p style={style.Time}>{this.timeSince(post.timeStamp)}</p>
                               <img src={post.avatar} style={style.Avatar} role="presentation" />
                               <p style={style.Username}><strong>{post.username}</strong></p>
                               <p style={style.PostText}>{post.text}</p>

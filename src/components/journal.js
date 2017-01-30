@@ -66,15 +66,17 @@ componentWillReceiveProps(props) {
   }
 }
 
+
 saveEntry () {
+  var today = new Date()
   if (this.textArea.value === "") {
     alert('Cannot save an empty journal entry')
   } else {
   let entry = {
     text: this.textArea.value.trim(),
-    date: new Date()
+    date: today.toDateString()
   }
-  base.update(`users/${this.props.uid}/journal/${entry.date}`, {
+  base.push(`users/${this.props.uid}/journal`, {
     data: entry
   })
   this.textArea.value = ""

@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import '../App.css';
-// import base from '../config.js'
 import Paper from 'material-ui/Paper';
 import FilterDrama from 'material-ui/svg-icons/image/filter-drama';
-import IconButton from 'material-ui/IconButton';
 // import PhotoCamera from 'material-ui/svg-icons/image/photo-camera';
 
 
@@ -19,7 +17,7 @@ const style = {
     width: '90%',
     height: 60,
     marginTop: 50,
-    marginBottom: 35
+    marginBottom: 15
   },
   Characters: {
     fontSize: 17,
@@ -35,17 +33,20 @@ const style = {
     backgroundColor: '#f79e9e'
   },
   PostButton: {
-    color: 'white',
     display: 'block',
     backgroundColor: '#36cee2',
     border: 'none',
-    marginTop: -45,
-    marginLeft: 220,
+    marginTop: -30,
+    marginLeft: 500,
+    marginBottom: 200,
     width: 55,
     height: 30,
     borderRadius: 11,
     boxShadow: '1px 1.5px 2px  gray'
   },
+  PostIcon: {
+    color: 'white'
+  }
   // PhotoButton: {
   //   marginTop: -18,
   //   marginLeft: -3,
@@ -67,7 +68,7 @@ class ShareBox extends Component {
     super()
     this.state = {
       text: "",
-      photoAdded: false
+      photoAdded: false,
     }
     this.handleChange = this.handleChange.bind(this)
     this.togglePhoto = this.togglePhoto.bind(this)
@@ -84,9 +85,9 @@ handleChange (event) {
 
 remainingCharacters () {
   if (this.state.photoAdded) {
-    return 140 - 23 - this.state.text.length;
+    return 150 - 23 - this.state.text.length;
   } else {
-    return 140 - this.state.text.length;
+    return 150 - this.state.text.length;
   }
 }
 
@@ -101,49 +102,61 @@ overflowAlert () {
 }
 
 post () {
+  var time = new Date() + ''
   if (this.textArea.value === "") {
     alert('Please type about your kindness')
-  } else {
-    let post = {
-      username: this.props.username,
-      text: this.textArea.value.trim(),
-      avatar: this.props.avatar,
-      image: "",
-      likeCount: "",
-      timeStamp: ""
-    }
-    this.textArea.value = ""
-    this.props.newArray(post)
+  } else if (this.textArea.value.length > 150) {
+    alert('Please shorten your post')
   }
+    let post = {
+    username: this.props.username,
+    text: this.textArea.value.trim(),
+    avatar: this.props.avatar,
+    image: "",
+    likeCount: "",
+    timeStamp: time
+  }
+  this.textArea.value = ""
+  this.props.newArray(post)
 }
 
+  renderInput () {
+    if (this.props.uid === "") {
+      return (
+        <div>
+          <p>Earth Angels is a social app for daily acts of kindness.</p>
+          <p>We are guardians of goodness in the world. Protectors of peace.</p>
+          <p>👐 Join us. Rise up. 👐</p>
+        </div>
+      )
+    } else {
+      return (
+          <div>
+             {this.overflowAlert()}
+             <textarea
+             style={style.Input}
+             onChange={this.handleChange}
+             ref={textArea => this.textArea = textArea}
+             placeholder="👐  Share about Your Kindess . . . 👐"
+             />
+
+             <span style={style.Characters}>{this.remainingCharacters()}</span>
+
+             <button style={style.PostButton} onClick={this.post.bind(this)}>
+              <FilterDrama style={style.PostIcon} />
+             </button>
+           </div>
+      )
+    }
+  }
 
 
     render() {
         return (
           <div>
             <div style={style.Div}>
-
-               {this.overflowAlert()}
-
-               <textarea
-               style={style.Input}
-               onChange={this.handleChange}
-               ref={textArea => this.textArea = textArea}
-               placeholder="👐  Share about Your Kindess . . . 👐"
-               />
-
-               <span style={style.Characters}>{this.remainingCharacters()}</span>
-
-               <IconButton
-                  iconStyle={style.PostButton}
-                  tooltipPosition="top-center"
-                  tooltip="post"
-               >
-                    <FilterDrama onClick={this.post.bind(this)} />
-               </IconButton>
+              {this.renderInput()}
             </div>
-
           </div>
         )
     }

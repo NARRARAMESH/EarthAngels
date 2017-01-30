@@ -26,9 +26,6 @@ const style = {
     fontFamily: 'Josefin Sans',
     fontSize: 16,
   },
-  Header: {
-    marginBottom: -5
-  },
   Card: {
     marginTop: 15
   },
@@ -67,6 +64,17 @@ const style = {
     lineHeight: 1.4,
     color: 'black',
     whiteSpace: 'pre'
+  },
+  Title: {
+    backgroundColor: '#1C3285',
+    width: 300,
+    marginLeft: 80,
+    marginBottom: 5,
+    color: 'white',
+    opacity: .95,
+    borderRadius: 5,
+    padding: 10,
+    boxShadow: '1px 1.5px 2px  gray',
   }
 };
 
@@ -104,7 +112,7 @@ class JournalArchive extends Component {
   render() {
     return (
       <div style={style.Div}>
-      <h3 style={style.Header}>Archive</h3>
+      <h3 style={style.Title}>Archive</h3>
       <span style={style.CountText}>{this.state.archive.length} entries</span>
 
       <Card style={style.Card}>
@@ -114,12 +122,12 @@ class JournalArchive extends Component {
         loader={<h4>Loading...</h4>}>
       <ul style={style.List}>
         {this.state.archive.map((entry, index) => {
-            return <li key={index}>
+            return <li key={index} onClick={this.expandEntry.bind(this, entry)}>
                       <IconButton tooltip="expand" tooltipPosition="top-center">
-                        <ImportContacts onClick={this.expandEntry.bind(this, entry)}/>
+                        <ImportContacts  />
                       </IconButton>
 
-                        <p>{entry.date}</p>
+                        <p><em>{entry.date}</em></p>
                         <p>{(entry.text).substr(0, 50)}</p>
                         <hr />
                    </li>

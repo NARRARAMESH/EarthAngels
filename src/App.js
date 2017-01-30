@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import base from './config.js';
+import { hashHistory } from 'react-router';
 import './App.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -18,7 +19,14 @@ const style = {
     fontFamily: "Cinzel Decorative",
     fontWeight: 'bolder'
   },
-  FlatButton: {
+  LoginButton: {
+    color: 'white',
+    marginTop: '10px',
+    fontFamily: 'Josefin Sans',
+    backgroundColor: '#adadf4',
+    boxShadow: '1px 1.5px 2px  gray'
+  },
+  LogoutButton: {
     color: 'white',
     marginTop: '10px',
     fontFamily: 'Josefin Sans'
@@ -51,10 +59,13 @@ class App extends Component {
 
   logOut(){
     base.unauth()
-    this.setState({
-      user: {}
-    })
   }
+
+//   requireAuth() {
+//   if (this.state.user = "") {
+//     hashHistory.push('/')
+//   }
+// }
 
 
   authStateChanged (user) {
@@ -103,18 +114,33 @@ class App extends Component {
   renderButton() {
     if (this.state.uid === "") {
       return <FlatButton
-              style={style.FlatButton}
+              style={style.LoginButton}
               onTouchTap={this.logInOpen}
+              // onTouchTap={this.logIn.bind(this)}
               label="Login"
             />
     } else {
       return <FlatButton
-        style={style.FlatButton}
+        style={style.LogoutButton}
         onTouchTap={this.logOut}
         label="Logout"
       />
     }
   }
+
+  renderSidebar() {
+    if (this.state.uid === "") {
+    } else {
+      return (
+      <Sidebar toDo={this.state.toDo} toggleToDo={this.toggleToDo}
+               journal={this.state.journal} toggleJournal={this.toggleJournal}
+               avatar={this.state.avatar}
+               username={this.state.username}
+               uid={this.state.uid}
+      />
+    )
+  }
+}
 
 
   render() {
@@ -135,14 +161,10 @@ class App extends Component {
             </AppBar>
         </MuiThemeProvider>
 
+        {this.renderSidebar()}
+
         <Login logInOpen={this.state.logInOpen} logInClose={this.logInClose} userLogIn={this.logIn.bind(this)} userLogOut={this.logOut.bind(this)} />
 
-        <Sidebar toDo={this.state.toDo} toggleToDo={this.toggleToDo}
-                 journal={this.state.journal} toggleJournal={this.toggleJournal}
-                 avatar={this.state.avatar}
-                 username={this.state.username}
-                 uid={this.state.uid}
-        />
 
         <ToDo toDo={this.state.toDo} toggleToDo={this.toggleToDo} uid={this.state.uid} username={this.state.username} avatar={this.state.avatar}/>
         <Journal journal={this.state.journal} toggleJournal={this.toggleJournal} uid={this.state.uid}/>

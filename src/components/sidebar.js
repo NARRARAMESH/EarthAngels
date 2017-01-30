@@ -68,6 +68,17 @@ class Sidebar extends Component {
   }
 
 
+  stateSync () {
+    this.sync = base.bindToState(`users/${this.props.uid}/todos`, {
+      state: 'completeTodos',
+      context: this,
+      asArray: true
+    })
+  }
+
+  componentDidMount () {
+    this.stateSync ()
+  }
 
   componentWillReceiveProps(props) {
     if (this.props.uid === null) {
@@ -75,13 +86,11 @@ class Sidebar extends Component {
     if (this.sync) {
       base.removeBinding(this.sync)
     }
-    this.sync = base.bindToState(`users/${this.props.uid}/todos`, {
-      state: 'completeTodos',
-      context: this,
-      asArray: true
-    })
+    this.stateSync ()
    }
   }
+
+
 
 
 
@@ -105,7 +114,7 @@ class Sidebar extends Component {
                 <Link to="/feedofKindness" activeClassName="active">
                   <button className="sidebarButton" >
                     <FilterDrama style={style.icon}/>
-                    Earth Angels
+                  Earth Angels Live
                   </button>
                 </Link>
               </MuiThemeProvider>
@@ -132,7 +141,7 @@ class Sidebar extends Component {
                 <Link to="/events" activeClassName="active">
                   <button className="sidebarButton">
                     <Language style={style.icon}/>
-                    Global Action
+                    Angel Events
                   </button>
                 </Link>
               </MuiThemeProvider>

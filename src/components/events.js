@@ -20,17 +20,22 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 import { Link } from 'react-router'
 
 
-
-
-
 const style = {
   Events: {
-    height: 1000
+    height: 1000,
+    display: 'flex',
+    alignContent: 'space-between'
+  },
+  Attending: {
+    height: 360,
+    width: 300,
+    marginTop: 60,
+    marginLeft: 80
   },
   Paper: {
     height: 800,
     width: 600,
-    marginLeft: 250,
+    marginLeft: 350,
     marginTop: 60,
     textAlign: 'center',
     display: 'inline-block',
@@ -71,20 +76,37 @@ const style = {
   },
   CreateEvent: {
     color: 'white',
-    width: 40,
-    height: 40,
-    backgroundColor: '#1C3285',
-    borderRadius: 120
+    width: 48,
+    height: 48,
+    backgroundColor: '#adadf4',
+    borderRadius: 120,
+    boxShadow: '1px 1.5px 2px  gray',
+    marginTop: -5,
   },
   List: {
     listStyleType: 'none'
   },
-  Location: {
+  EventInfo: {
     textAlign: 'center',
-    marginLeft: -10
+    marginLeft: -10,
+    color: 'black'
   },
   Link: {
     textDecoration: 'none'
+  },
+  EventDashboard: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  Title: {
+    backgroundColor: '#1C3285',
+    width: 400,
+    marginLeft: 50,
+    color: 'white',
+    opacity: .95,
+    borderRadius: 5,
+    padding: 10,
+    boxShadow: '1px 1.5px 2px  gray',
   }
 };
 
@@ -94,11 +116,13 @@ class Events extends Component {
     super()
     this.state=({
       dialog: false,
-      events: []
+      events: [],
+      created: [],
+      attending: []
     })
   }
 
-  componentDidMount (){
+  componentDidMount () {
     base.listenTo(`events`, {
       context: this,
       asArray: true,
@@ -109,6 +133,21 @@ class Events extends Component {
       }
     })
   }
+
+  componentWillReceiveProps (props) {
+  if (this.props.uid !== "") {
+  base.listenTo(`user/${this.props.uid}/events/attending`, {
+    context: this,
+    asArray: true,
+    then: (data) => {
+      console.log('data is', data)
+      this.setState({
+        attending: data
+      })
+    }
+  })
+ }
+}
 
   toggleEvent = () => this.setState({ dialog: !this.state.dialog })
 
@@ -143,47 +182,77 @@ class Events extends Component {
 
 
   render() {
+    console.log('this.state.attending is', this.state.attending)
     return (
       <div style={style.Events}>
 
+      <MuiThemeProvider>
+          <Paper style={style.Paper} zDepth={2}>
+              <AppBar
+                style={style.AppBar}
+                title="Angel Events near you"
+                iconElementLeft={<IconButton><Search /></IconButton>}
+              >
+              <IconButton tooltip="Create Event"
+                  iconStyle={style.CreateEvent}
+                  onClick={this.toggleEvent}>
+                  <ContentAdd />
+              </IconButton>
+              </AppBar>
+
+              <InfiniteScroll
+                height={700}
+                endMessage={<Favorite/>}
+                loader={<h4>Loading...</h4>}>
+
+              <ul style={style.List}>
+                {this.state.events.map((event, index) => {
+                    return <li key={index}>
+                              <div >
+                              <Link style={style.Link} className="link" to={`/events/${event.title}`} activeClassName="active">
+                                <h2 style={style.Title}>{event.title}</h2>
+                                <p style={style.EventInfo}>{event.date} at {event.time}</p>
+                                <p style={style.EventInfo}>{event.location}</p>
+                                <hr />
+                              </Link>
+                              </div>
+                           </li>
+                  })
+                }
+                </ul>
+                </InfiniteScroll>
+          </Paper>
+      </MuiThemeProvider>
+
+      <div style={style.EventDashboard}>
+
         <MuiThemeProvider>
-            <Paper style={style.Paper} zDepth={2}>
-                <AppBar
-                  style={style.AppBar}
-                  title="Kind Events near you"
-                  iconElementLeft={<IconButton><Search /></IconButton>}
-                >
-                <IconButton tooltip="Create Event"
-                    iconStyle={style.CreateEvent}
-                    onClick={this.toggleEvent}>
-                    <ContentAdd />
-                </IconButton>
-                </AppBar>
-
-                <InfiniteScroll
-                  height={700}
-                  endMessage={<Favorite/>}
-                  loader={<h4>Loading...</h4>}>
-
-                <ul style={style.List}>
-                  {this.state.events.map((event, index) => {
-                      return <li key={index}>
-                                <div >
-                                <Link style={style.Link} to={`/events/${event.title}`} activeClassName="active">
-                                  <h3>{event.title}</h3>
-                                  <span>{event.date} at</span><span> {event.time}</span>
-                                  <p style={style.Location}>{event.location}</p>
-                                  <hr />
-                                </Link>
-                                </div>
-                             </li>
-                    })
-                  }
-                  </ul>
-                  </InfiniteScroll>
-
-            </Paper>
+          <Paper style={style.Attending} zDepth={2}>
+            <AppBar style={style.AppBar} showMenuIconButton={false} title="Attending" />
+            <ul style={style.List}>
+              {this.state.attending.map((event, index) => {
+                  return <li key={index}>
+                            <div >
+                              <h3>{event.title}</h3>
+                              <span>{event.date} at</span><span> {event.time}</span>
+                              <p style={style.Location}>{event.location}</p>
+                              <hr />
+                            </div>
+                         </li>
+                })
+              }
+              </ul>
+          </Paper>
         </MuiThemeProvider>
+
+        <MuiThemeProvider>
+          <Paper style={style.Attending} zDepth={2}>
+            <AppBar style={style.AppBar} showMenuIconButton={false} title="Created" />
+
+          </Paper>
+        </MuiThemeProvider>
+      </div>
+
 
         <MuiThemeProvider>
             <Dialog
@@ -240,6 +309,3 @@ class Events extends Component {
 }
 
 export default Events;
-
-
-// onClick={this.viewEvent.bind(this, event)}
