@@ -192,5 +192,3 @@ post () {
 export default ShareBox;
 
 // <IconButton iconStyle={style.PhotoButton} tooltip="add photo" tooltipPosition="top-center"><PhotoCamera /></IconButton>
-
-// disabled={this.remainingCharacters() === 140} // for post button

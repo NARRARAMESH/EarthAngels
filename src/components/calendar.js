@@ -3,8 +3,10 @@ import '../App.css';
 // import base from '../config.js';
 import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Dayz from "react-day-picker";
+import Dayz, {EventsCollection}  from "dayz";
 import moment from 'moment'
+import MomentRange from 'moment-range';
+
 
 
 const style = {
@@ -21,12 +23,13 @@ class Calendar extends Component {
     this.state=({
       dialog: false,
       events: [],
-      date: '01-30-2017'
+      date: '01-31-2017'
     })
   }
 
   componentWillMount() {
         const date = moment('2011-10-21');
+        console.log('eventscollection is', Dayz.EventsCollection)
         const events = new Dayz.EventsCollection([
             { content: 'A short event',
               range: moment.range( date.clone(),
@@ -38,7 +41,7 @@ class Calendar extends Component {
               range: moment.range( date.clone().subtract(2,'days'),
                                    date.clone().add(8,'days') ) }
         ]);
-        this.state({events, date});
+        this.setState({events, date});
     }
 
   render() {
@@ -50,6 +53,7 @@ class Calendar extends Component {
         <Dayz
          display='week'
          date={this.state.date}
+         events={this.state.events}
         />
 
 

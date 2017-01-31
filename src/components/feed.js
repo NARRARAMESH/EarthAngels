@@ -6,6 +6,9 @@ import Paper from 'material-ui/Paper';
 import ShareBox from './shareBox.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Favorite from 'material-ui/svg-icons/action/favorite';
+import Checkbox from 'material-ui/Checkbox';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 
 
@@ -27,7 +30,7 @@ const style = {
   Avatar: {
     float: 'left',
     marginRight: 25,
-    marginBottom: 60,
+    marginBottom: 48,
     width: 45,
     height: 45,
     borderRadius: 10,
@@ -45,7 +48,7 @@ const style = {
     fontSize: 20,
     marginRight: 100,
     textAlign: 'justify',
-    lineHeight: 1.3
+    lineHeight: 1.3,
   },
   Time: {
     color: '#ccc',
@@ -54,6 +57,11 @@ const style = {
     float: 'right',
     marginRight: 40,
     fontWeight: 'lighter'
+  },
+  Heart: {
+    color: 'red',
+    marginTop: -50,
+    marginLeft: 480
   }
 };
 
@@ -145,6 +153,11 @@ class Feed extends Component {
                               <img src={post.avatar} style={style.Avatar} role="presentation" />
                               <p style={style.Username}><strong>{post.username}</strong></p>
                               <p style={style.PostText}>{post.text}</p>
+                              <Checkbox
+                                checkedIcon={<ActionFavorite />}
+                                uncheckedIcon={<ActionFavoriteBorder />}
+                                style={style.Heart}
+                              />
                               <hr />
 
                             </div>

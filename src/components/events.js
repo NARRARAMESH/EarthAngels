@@ -12,7 +12,8 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 import Spinner from 'react-spinkit'
 import { Link } from 'react-router'
 import CreateEvent from './createEvent';
-// import Calendar from './calendar.js'
+import Distance from './distance.js'
+import Calendar from './calendar.js'
 
 
 const style = {
@@ -72,6 +73,12 @@ const style = {
     borderRadius: 5,
     padding: 10,
     boxShadow: '1px 1.5px 2px  gray',
+  },
+  Heart: {
+    color: 'white'
+  },
+  Spinner: {
+    marginLeft: 34
   }
 };
 
@@ -85,7 +92,8 @@ class Events extends Component {
       created: [],
       attending: [],
       deviceLat: "",
-      deviceLng: ""
+      deviceLng: "",
+      distance: false
     })
   }
 
@@ -116,6 +124,19 @@ class Events extends Component {
     })
   }
 
+  // newLocation (distance) {
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //       this.setState({
+  //         deviceLat: position.coords.latitude,
+  //         deviceLng: position.coords.longitude
+  //       })
+  //       var localEvents = this.state.events.filter((event) => this.localizeEvents(event.lat, event.lng) <= distance)
+  //       this.setState({
+  //         events: localEvents
+  //       })
+  //   })
+  // }
+
 
   componentDidMount () {
     base.listenTo('events', {
@@ -129,9 +150,12 @@ class Events extends Component {
 
   toggleDialog = () => this.setState({ dialog: !this.state.dialog })
 
+  toggleDistance = () => this.setState({ distance: !this.state.distance })
+
+
   showSpinner() {
     if (this.state.events.length === 0) {
-      return <Spinner spinnerName="three-bounce" />
+      return <Spinner spinnerName="three-bounce" style={style.Spinner} />
     }
   }
 
@@ -145,7 +169,7 @@ class Events extends Component {
               <AppBar
                 style={style.AppBar}
                 title="Angel Events near you"
-                iconElementLeft={<IconButton><Search /></IconButton>}
+                iconElementLeft={<IconButton><Search onClick={this.toggleDistance}/></IconButton>}
               >
               <IconButton tooltip="Create Event"
                   iconStyle={style.CreateEvent}
@@ -181,7 +205,11 @@ class Events extends Component {
       </MuiThemeProvider>
 
       <CreateEvent dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username}/>
-        {this.props.children}
+      <Distance distance={this.state.distance} toggleDialog={this.toggleDistance} newLocation={this.newLocation}/>
+      <Calendar />
+
+
+      {this.props.children}
 
       </div>
     );
