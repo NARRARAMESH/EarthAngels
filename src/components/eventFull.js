@@ -7,11 +7,15 @@ import Card from 'material-ui/Card';
 import AppBar from 'material-ui/AppBar';
 import CloudDone from 'material-ui/svg-icons/file/cloud-done';
 import Comments from './comments.js'
+import {Gmaps, Marker} from 'react-gmaps';
 
 
 const style = {
   Events: {
-    height: 1000
+    display: 'flex',
+    justifyConent: 'space-around',
+    height: 1000,
+    marginLeft: 100
   },
   Paper: {
     height: 900,
@@ -93,6 +97,20 @@ const style = {
     borderRadius: 5,
     padding: 10,
     boxShadow: '1px 1.5px 2px  gray'
+  },
+  MapBox: {
+    width: 400,
+    height: 400,
+    display: 'block',
+    margin: 'auto',
+    marginTop: 20
+  },
+  MapDiv: {
+    width: 440,
+    height: 440,
+    backgroundColor: 'white',
+    marginTop: 135,
+    marginLeft: 40
   }
 };
 
@@ -127,6 +145,34 @@ componentDidMount () {
   }
 
 
+    onMapCreated (map) {
+      map.setOptions({
+        disableDefaultUI: true
+      })
+    }
+
+
+  renderMap () {
+    if (this.state.event.lat !== "" && this.state.event.lat !== "") {
+      return (
+               <div style={style.MapDiv}>
+                 <Gmaps
+                    style={style.MapBox}
+                    lat={this.state.event.lat}
+                    lng={this.state.event.lng}
+                    zoom={12}
+                    params={{v: '3.exp', key: 'AIzaSyAl-RCx1yHNi4DFSEZiPwgb4qhoUT39RTk'}}>
+                  <Marker
+                    lat={this.state.event.lat}
+                    lng={this.state.event.lng}
+                    draggable={true}
+                    onDragEnd={this.onDragEnd} />
+                </Gmaps>
+              </div>
+            )
+    }
+  }
+
   render() {
     return (
       <div style={style.Events}>
@@ -142,7 +188,6 @@ componentDidMount () {
                                 <CloudDone style={style.CloudDone}/>
                               </button>
                              }
-
           />
           <Card style={style.Card}>
 
@@ -157,7 +202,6 @@ componentDidMount () {
                   <span style={style.InfoHeader}>Why:</span>
                   <p style={style.Desc}>{this.state.event.desc}</p>
                 </div>
-
             </li>
           </ul>
           </Card>
@@ -166,33 +210,11 @@ componentDidMount () {
 
           </Paper>
       </MuiThemeProvider>
+
+      {this.renderMap()}
       </div>
     );
   }
 }
 
 export default EventFull;
-
-// {this.showAttendees()}
-
-//
-// showAttendees () {
-//   if (this.state.event.attending) {
-//   var usernames = Object.keys(this.state.event.attending.users).map((key, index) => {
-//     return {this.state.event.attending.users[key].username}
-//   })
-// }
-// return <span>Attending:{usernames}</span>
-// }
-
-
-// <div style={style.Attending}>
-//   <p style={style.Help}>Check to attend</p>
-//   <IconButton tooltip="attending?" tooltipPosition="top-center">
-//     <Checkbox
-//       onCheck={this.attendEvent.bind(this)}
-//       iconStyle={style.CheckBox}
-//       labelStyle={style.Label}
-//     />
-//   </IconButton>
-// </div>

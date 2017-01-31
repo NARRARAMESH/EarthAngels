@@ -4,9 +4,8 @@ import base from '../config.js'
 import Delete from 'material-ui/svg-icons/action/delete';
 import Check from 'material-ui/svg-icons/navigation/check';
 import Toggle from 'material-ui/Toggle';
-// import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
-
+import Snackbar from 'material-ui/Snackbar';
 
 const style = {
   Text: {
@@ -64,6 +63,9 @@ const style = {
     lineHeight: 1.4,
     fontSize: 16,
     letterSpacing: .5
+  },
+  Snackbar: {
+    backgroundColor: '#adadf4',
   }
 }
 
@@ -72,10 +74,11 @@ class ToDoList extends Component {
   constructor () {
     super()
     this.state = {
-      todos: []
+      todos: [],
+      editing: false,
+      open: false
     }
   }
-
 
   componentWillReceiveProps(props) {
     if (this.props.uid === null) {
@@ -117,14 +120,13 @@ class ToDoList extends Component {
     })
   }
 
-  editItem (clickedItem) {
-    console.log('onblur works')
-    var item = this.state.todos.filter(item => item === clickedItem)
-    base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
-      data: {text: item[0].text}
-    })
-  }
-
+  // editItem (clickedItem) {
+  //   var item = this.state.todos.filter(item => item === clickedItem)
+  //   console.log('clickedItem is', clickedItem)
+  //   base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
+  //     data: {text: this.pTag.index.innerText}
+  //   })
+  // }
 
   completeItem(clickedItem) {
     var item = this.state.todos.filter(item => item === clickedItem)
@@ -133,6 +135,7 @@ class ToDoList extends Component {
       then: () => {
         var time = new Date()
         if (item[0].public === true) {
+        this.showMessage()
         base.update(`feed/${item[0].key}`, {
           data: {username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: time}
       })
@@ -141,13 +144,25 @@ class ToDoList extends Component {
   })
 }
 
-
   deleteItem(clickedItem) {
     var newList = this.state.todos.filter(item => item !==clickedItem)
     this.setState({
       todos: newList
     })
   }
+
+  showMessage = () => {
+    this.setState({
+      open: true
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false
+    });
+  };
+
 
 
   render() {
@@ -166,11 +181,11 @@ class ToDoList extends Component {
                                 <Toggle  onToggle={this.toggleItem.bind(this, item)} />
                                 </IconButton>
 
-                                <IconButton iconStyle={style.Check} tooltip="complete" tooltipPosition="top-center">
+                                <IconButton iconStyle={style.Check}>
                                   <Check  onClick={this.completeItem.bind(this, item)} />
                                 </IconButton>
 
-                                <p tabIndex contentEditable="true" onBlur={this.editItem.bind(this, item)} style={style.ItemText}>{item.text}</p>
+                                <p style={style.ItemText}>{item.text}</p>
                                 <IconButton iconStyle={style.Delete}>
                                   <Delete  onClick={this.deleteItem.bind(this, item)}/>
                                 </IconButton>
@@ -184,10 +199,16 @@ class ToDoList extends Component {
     				</ul>
             <p style={style.Help}>To share your tasks publicly, turn toggle on before marking task complete</p>
 
+        <Snackbar
+          bodyStyle={style.Snackbar}
+          open={this.state.open}
+          message="Posted to public feed"
+          autoHideDuration={2000}
+          onRequestClose={this.handleRequestClose}
+        />
       </div>
     )
   }
 }
-
 
 export default ToDoList;

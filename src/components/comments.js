@@ -91,7 +91,7 @@ class Comments extends Component {
       if(this.input.input.value === "") {
         alert("comment field cannot be blank")
       } else {
-      var time = new Date()
+      var time = new Date() + ''
       base.push(`comments/${this.props.event.title}`, {
         data: {username: this.props.username, text: this.input.input.value.trim(), avatar: this.props.avatar, timeStamp: time }
       })

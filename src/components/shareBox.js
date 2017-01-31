@@ -44,6 +44,18 @@ const style = {
     borderRadius: 11,
     boxShadow: '1px 1.5px 2px  gray'
   },
+  DisabledButton: {
+    display: 'block',
+    backgroundColor: '#ccc',
+    border: 'none',
+    marginTop: -30,
+    marginLeft: 500,
+    marginBottom: 200,
+    width: 55,
+    height: 30,
+    borderRadius: 11,
+    boxShadow: '1px 1.5px 2px  gray'
+  },
   PostIcon: {
     color: 'white'
   }
@@ -69,6 +81,7 @@ class ShareBox extends Component {
     this.state = {
       text: "",
       photoAdded: false,
+      button: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.togglePhoto = this.togglePhoto.bind(this)
@@ -97,6 +110,22 @@ overflowAlert () {
       <Paper>
         <p style={style.Length}>Please shorten your post</p>
       </Paper>
+    )
+  }
+}
+
+renderButton () {
+  if (this.remainingCharacters() < 0 || (this.textArea && this.textArea.value === "")) {
+    return (
+      <button style={style.DisabledButton} onClick={this.post.bind(this)} disabled>
+       <FilterDrama style={style.PostIcon} />
+      </button>
+    )
+  } else {
+    return (
+      <button style={style.PostButton} onClick={this.post.bind(this)}>
+      <FilterDrama style={style.PostIcon} />
+      </button>
     )
   }
 }
@@ -142,9 +171,7 @@ post () {
 
              <span style={style.Characters}>{this.remainingCharacters()}</span>
 
-             <button style={style.PostButton} onClick={this.post.bind(this)}>
-              <FilterDrama style={style.PostIcon} />
-             </button>
+             {this.renderButton()}
            </div>
       )
     }

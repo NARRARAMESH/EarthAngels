@@ -53,7 +53,6 @@ const style = {
     fontSize: 12,
     float: 'right',
     marginRight: 40,
-    // marginRight: 40, //this is what i was playing with when avatars stopped loading
     fontWeight: 'lighter'
   }
 };

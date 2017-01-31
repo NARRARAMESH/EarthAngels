@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import base from './config.js';
-import { hashHistory } from 'react-router';
+// import { hashHistory } from 'react-router';
 import './App.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -102,8 +102,8 @@ class App extends Component {
   }
 
 
-  logInOpen = () => this.setState({ logInOpen: true })
-  logInClose = () => this.setState({ logInOpen: false })
+  // logInOpen = () => this.setState({ logInOpen: true })
+  // logInClose = () => this.setState({ logInOpen: false })
 
   toggleToDo = () => this.setState({toDo: !this.state.toDo});
   closeToDo = () => this.setState({toDo: false});
@@ -115,14 +115,13 @@ class App extends Component {
     if (this.state.uid === "") {
       return <FlatButton
               style={style.LoginButton}
-              onTouchTap={this.logInOpen}
-              // onTouchTap={this.logIn.bind(this)}
+              onTouchTap={this.logIn.bind(this)}
               label="Login"
             />
     } else {
       return <FlatButton
         style={style.LogoutButton}
-        onTouchTap={this.logOut}
+        onTouchTap={this.logOut.bind(this)}
         label="Logout"
       />
     }
