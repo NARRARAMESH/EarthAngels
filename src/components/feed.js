@@ -59,9 +59,14 @@ const style = {
     fontWeight: 'lighter'
   },
   Heart: {
-    color: 'red',
     marginTop: -50,
-    marginLeft: 480
+    marginLeft: 480,
+    marginBottom: -5
+  },
+  Love: {
+    color: '#ccc',
+    marginLeft: 450,
+    fontSize: 12
   }
 };
 
@@ -70,7 +75,8 @@ class Feed extends Component {
   constructor () {
     super()
     this.state = {
-      feed: []
+      feed: [],
+      checked: false
     }
   }
 
@@ -78,7 +84,7 @@ class Feed extends Component {
     base.syncState(`feed`, {
       context: this,
       state: 'feed',
-      asArray: true
+      asArray: true,
     })
   }
 
@@ -131,6 +137,31 @@ class Feed extends Component {
 }
 
 
+likePost (likedPost) {
+  var post = this.state.feed.filter(post => post === likedPost)
+  var likeCount = post[0].likeCount
+  base.update(`feed/${post[0].key}`, {
+    data: {likeCount: likeCount + 1},
+    then: () => {
+      var time = new Date()
+      base.update(`likes/${post[0].uid}/${time}`, {
+        data: {text: post[0].text, username: this.props.username, time: time}
+    })
+   }
+ })
+}
+
+  renderLikeCount (likeCount) {
+    if (likeCount === 0) {
+      return null
+    } else if (likeCount === 1) {
+      return <span style={style.Love}>{likeCount} love</span>
+    } else {
+      return <span style={style.Love}>{likeCount} loves</span>
+    }
+  }
+
+
   render() {
     var feedCopy = this.state.feed.slice(0)
     var feedReverse = feedCopy.reverse()
@@ -156,8 +187,10 @@ class Feed extends Component {
                               <Checkbox
                                 checkedIcon={<ActionFavorite />}
                                 uncheckedIcon={<ActionFavoriteBorder />}
+                                onCheck={this.likePost.bind(this, post)}
                                 style={style.Heart}
                               />
+                              {this.renderLikeCount(post.likeCount)}
                               <hr />
 
                             </div>

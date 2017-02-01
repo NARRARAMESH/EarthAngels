@@ -11,7 +11,6 @@ import Journal from './components/journal.js';
 import Login from './components/login.js';
 import Sidebar from './components/sidebar.js';
 
-
 injectTapEventPlugin()
 
 const style = {

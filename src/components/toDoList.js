@@ -137,7 +137,7 @@ class ToDoList extends Component {
         if (item[0].public === true) {
         this.showMessage()
         base.update(`feed/${item[0].key}`, {
-          data: {username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: time}
+          data: {uid: this.props.uid, username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: time}
       })
      }
    }

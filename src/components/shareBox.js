@@ -138,11 +138,12 @@ post () {
     alert('Please shorten your post')
   }
     let post = {
+    uid: this.props.uid,
     username: this.props.username,
     text: this.textArea.value.trim(),
     avatar: this.props.avatar,
     image: "",
-    likeCount: "",
+    likeCount: 0,
     timeStamp: time
   }
   this.textArea.value = ""

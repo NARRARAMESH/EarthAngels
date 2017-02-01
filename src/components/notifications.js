@@ -17,50 +17,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 const style = {
-  Paper: {
-    zDepth: 1,
-    float: 'left',
-    height: 1000,
-    width: 220,
-    backgroundColor: '#1C3285',
-    position: 'fixed',
-    top: 0,
-    background: 'linear-gradient(to top left, #3b10d3, #5DBCD2)',
-  },
-  Avatar: {
-    marginTop: 90,
-    width: 90,
-    height: 90,
-    borderRadius: 100,
-    border: 'none'
-  },
-  UserName: {
-    color: 'white',
-    fontSize: 22,
-    fontFamily: 'Cinzel Decorative',
-    marginTop: 17,
-    fontWeight: 'bolder'
-  },
-  AOK: {
-    color: 'white',
-    fontSize: 16,
-    marginTop: 0,
-    marginBottom: 100,
-    marginLeft: 45
-  },
-  icon: {
-    color: 'white',
-    marginRight: 15,
-    width: 20,
-    height: 20,
-  },
-  icon2: {
-    color: 'white',
-    marginRight: 15,
-    marginLeft: -50,
-    width: 20,
-    height: 20,
-  },
   Popover: {
     maxWidth: 400,
     marginTop: 64
@@ -103,11 +59,10 @@ const style = {
 };
 
 
-class Sidebar extends Component {
+class Notifications extends Component {
   constructor () {
     super()
     this.state = {
-      completeTodos: [],
       notifications: [],
       open: false,
       anchorEl: event.currentTarget
@@ -115,16 +70,7 @@ class Sidebar extends Component {
   }
 
 
-  stateSync () {
-    this.sync = base.bindToState(`users/${this.props.uid}/todos`, {
-      state: 'completeTodos',
-      context: this,
-      asArray: true
-    })
-  }
-
   componentDidMount () {
-    this.stateSync ()
     base.listenTo(`likes/${this.props.uid}`, {
       context: this,
       asArray: true,
@@ -137,16 +83,6 @@ class Sidebar extends Component {
     })
   }
 
-
-  componentWillReceiveProps(props) {
-    if (this.props.uid === null) {
-    } else {
-    if (this.sync) {
-      base.removeBinding(this.sync)
-    }
-    this.stateSync ()
-   }
-  }
 
 
   handleTouchTap = (event) => {
@@ -207,68 +143,13 @@ class Sidebar extends Component {
     var notificationsCopy = this.state.notifications.slice(0)
     var notificationsReverse = notificationsCopy.reverse()
     return (
-      <div style={style.Paper} className="dashboardButtons">
-        <MuiThemeProvider>
-            <Paper
-              style={style.Paper}
-            >
-            <img src={this.props.avatar} style={style.Avatar} role="presentation" className="sidebarAvatar" />
+      <div>
 
-            <h5 style={style.UserName}>{this.props.username}</h5>
-
-            <p style={style.AOK}>Acts of Kindness: {this.state.completeTodos.filter(item => item.complete === true).length} </p>
-
-
-            <div className="dashboardButtons">
-              <MuiThemeProvider>
-                <Link to="/feedofKindness" activeClassName="active">
-                  <button className="sidebarButton" >
-                    <FilterDrama style={style.icon}/>
-                  Earth Angels Live
-                  </button>
-                </Link>
-              </MuiThemeProvider>
-
-              <MuiThemeProvider>
-                <Link>
-                  <button className="sidebarButton" onClick={this.props.toggleToDo}>
-                    <Assignment style={style.icon2}/>
-                    To-Do
-                  </button>
-                </Link>
-              </MuiThemeProvider>
-
-              <MuiThemeProvider>
-                <Link>
-                  <button className="sidebarButton" onClick={this.props.toggleJournal}>
-                    <ContentCreate style={style.icon2} />
-                    Journal
-                  </button>
-                </Link>
-              </MuiThemeProvider>
-
-              <MuiThemeProvider>
-                <Link to="/events" activeClassName="active">
-                  <button className="sidebarButton">
-                    <Language style={style.icon}/>
-                    Angel Events
-                  </button>
-                </Link>
-              </MuiThemeProvider>
-
-              <IconButton onClick={this.handleTouchTap.bind()} tooltip="notifications" tooltipPosition="right">
-                <Checkbox
-                  checked={true}
-                  checkedIcon={<ActionFavorite />}
-                  iconStyle={style.Love}
-                  style={style.Color}
-                />
-              </IconButton>
               <span style={style.Notifications}>{this.state.notifications.length}</span>
 
               <Popover
                 style={style.Popover}
-                open={this.state.open}
+                open={this.props.open}
                 anchorEl={this.state.anchorEl}
                 anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
@@ -283,7 +164,7 @@ class Sidebar extends Component {
                 {notificationsReverse.map((notification, index) => {
                   return (
                     <li key={index}>
-                      <p style={style.NotificationAlert}>{notification.username} liked your post:</p>
+                      <p style={style.NotificationAlert}>{notification.username} loved your post:</p>
                       <p style={style.NotificationText}>"{notification.text}"</p>
                       <p style={style.NotificationTime}>{this.timeSince(notification.time)}</p>
                       <hr/>
@@ -295,12 +176,9 @@ class Sidebar extends Component {
               </InfiniteScroll>
               </Popover>
 
-            </div>
-          </Paper>
-        </MuiThemeProvider>
       </div>
     );
   }
 }
 
-export default Sidebar;
+export default Notifications;

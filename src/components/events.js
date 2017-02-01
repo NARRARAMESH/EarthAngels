@@ -9,11 +9,11 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Search from 'material-ui/svg-icons/action/search';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Favorite from 'material-ui/svg-icons/action/favorite';
-import Spinner from 'react-spinkit'
 import { Link } from 'react-router'
 import CreateEvent from './createEvent';
 import Distance from './distance.js'
 import Calendar from './calendar.js'
+import CircularProgress from 'material-ui/CircularProgress';
 
 
 const style = {
@@ -155,7 +155,8 @@ class Events extends Component {
 
   showSpinner() {
     if (this.state.events.length === 0) {
-      return <Spinner spinnerName="three-bounce" style={style.Spinner} />
+      return  <CircularProgress size={80} thickness={5} style={style.Spinner} />
+
     }
   }
 

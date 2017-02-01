@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dayz, {EventsCollection}  from "dayz";
 import moment from 'moment'
 import MomentRange from 'moment-range';
+import '../dayz.css'
 
 
 
@@ -46,21 +47,12 @@ class Calendar extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
-
-      <Paper style={style.Calendar}>
 
         <Dayz
-         display='week'
+         display='day'
          date={this.state.date}
          events={this.state.events}
         />
-
-
-      </Paper>
-      </MuiThemeProvider>
-
-
 
     )
   }
