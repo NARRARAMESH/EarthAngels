@@ -50,6 +50,9 @@ class EventList extends Component {
     base.listenTo(`users/${this.props.uid}/events`, {
       context: this,
       asArray: true,
+      queries: {
+      orderByChild: 'timeStamp',
+      },
       then: (data) => {
         this.setState({
           eventList: data

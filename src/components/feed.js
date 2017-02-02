@@ -166,7 +166,6 @@ likePost (likedPost) {
 
 
   render() {
-    console.log('this.state.feed is', this.state.feed)
     var feedCopy = this.state.feed.slice(0)
     var feedReverse = feedCopy.reverse()
     return (
@@ -184,7 +183,7 @@ likePost (likedPost) {
               {feedReverse.map((post, index) => {
                   return <li key={index}>
                             <div>
-                              <p style={style.Time}>{this.timeSince(post.timeStamp)}</p>
+                              <p style={style.Time}>{this.timeSince(post.elapsedTime)}</p>
                               <img src={post.avatar} style={style.Avatar} role="presentation" />
                               <p style={style.Username}><strong>{post.username}</strong></p>
                               <p style={style.PostText}>{post.text}</p>

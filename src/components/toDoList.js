@@ -133,11 +133,12 @@ class ToDoList extends Component {
     base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
       data: {complete: true},
       then: () => {
-        var time = new Date() + ''
+        var elapsedTime = new Date() + ''
+        var timeStamp = Date.now()
         if (item[0].public === true) {
         this.showMessage()
-        base.update(`feed/${time}`, {
-          data: {uid: this.props.uid, username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: time}
+        base.update(`feed/${timeStamp}`, {
+          data: {uid: this.props.uid, username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: timeStamp, elapsedTime: elapsedTime}
       })
      }
    }

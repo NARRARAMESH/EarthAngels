@@ -64,6 +64,7 @@ const style = {
   },
   Popover: {
     maxWidth: 400,
+    maxHeight: 200,
     marginTop: 64
   },
   Love: {
@@ -303,7 +304,7 @@ renderNotificationAmount () {
                 onRequestClose={this.handleRequestClose}
               >
               <InfiniteScroll
-                height={750}
+                height={300}
                 endMessage={<Favorite/>}
                 loader={<h4>Loading...</h4>}>
 

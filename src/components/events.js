@@ -146,7 +146,7 @@ class Events extends Component {
       context: this,
       asArray: true,
       queries: {
-      orderByChild: 'date',
+      orderByChild: 'timeStamp',
     },
       then: (data) => {
         this.getLocation(data)

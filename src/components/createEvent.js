@@ -119,7 +119,7 @@ class CreateEvent extends Component {
                 date: this.state.startDate.format("dddd, MMMM Do"),
                 time: this.state.time,
                 AmPm: this.state.AmPm,
-
+                timeStamp: this.state.startDate.unix(),
                 location: location,
                 lat: lat,
                 lng: lng
@@ -128,7 +128,7 @@ class CreateEvent extends Component {
               data: event
             })
             base.update(`users/${this.props.uid}/events/${event.title}`, {
-              data: {title: event.title, date: event.date, time: event.time, location: event.location, created: true, AmPm: event.AmPm}
+              data: {title: event.title, date: event.date, time: event.time, timeStamp: this.state.startDate.unix(), location: event.location, created: true, AmPm: event.AmPm}
             })
     this.title.value = ""
     this.desc.value = ""

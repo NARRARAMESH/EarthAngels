@@ -74,7 +74,8 @@ saveEntry () {
   } else {
   let entry = {
     text: this.textArea.value.trim(),
-    date: today.toDateString()
+    date: today.toDateString(),
+    timeStamp: Date.now()
   }
   base.push(`users/${this.props.uid}/journal`, {
     data: entry

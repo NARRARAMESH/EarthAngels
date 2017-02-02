@@ -60,18 +60,6 @@ const style = {
     color: 'white'
   }
   // PhotoButton: {
-  //   marginTop: -18,
-  //   marginLeft: -3,
-  //   color: 'white',
-  //   display: 'block',
-  //   backgroundColor: '#36cee2',
-  //   border: 'none',
-  //   float: 'right',
-  //   width: 55,
-  //   height: 30,
-  //   borderRadius: 11,
-  //   fontSize: 10,
-  //   boxShadow: '1px 1.5px 2px  gray'
   // }
 };
 
@@ -131,7 +119,8 @@ renderButton () {
 }
 
 post () {
-  var time = new Date() + ''
+  var elapsedTime = new Date() + ''
+  var timeStamp = Date.now()
     let post = {
     uid: this.props.uid,
     username: this.props.username,
@@ -139,7 +128,8 @@ post () {
     avatar: this.props.avatar,
     image: "",
     likeCount: 0,
-    timeStamp: time
+    timeStamp: timeStamp,
+    elapsedTime: elapsedTime
   }
   this.textArea.value = ""
   this.props.newArray(post)

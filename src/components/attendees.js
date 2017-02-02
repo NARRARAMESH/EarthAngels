@@ -44,7 +44,6 @@ class Attendees extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('this.props.eventTitle is', this.props.eventTitle)
       base.listenTo(`events/${this.props.eventTitle}/attending/users`, {
         context: this,
         asArray: true,
