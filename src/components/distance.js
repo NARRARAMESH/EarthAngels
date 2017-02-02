@@ -49,7 +49,6 @@ class Distance extends Component {
 
 
   render() {
-    console.log('this.state.value is', this.state.value)
     return (
       <div>
 

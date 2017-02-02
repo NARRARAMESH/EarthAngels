@@ -10,9 +10,9 @@ import Search from 'material-ui/svg-icons/action/search';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Favorite from 'material-ui/svg-icons/action/favorite';
 import { Link } from 'react-router'
-import CreateEvent from './createEvent';
-import Distance from './distance.js'
-import Calendar from './calendar.js'
+import CreateEvent from './createEvent.js';
+import EventList from './eventList.js';
+// import Distance from './distance.js'
 import CircularProgress from 'material-ui/CircularProgress';
 
 
@@ -54,16 +54,12 @@ const style = {
   },
   EventInfo: {
     textAlign: 'center',
-    marginLeft: -10,
+    marginLeft: -20,
     color: 'black'
   },
   Link: {
     textDecoration: 'none'
   },
-  // EventDashboard: {
-  //   display: 'flex',
-  //   flexDirection: 'column'
-  // },
   Title: {
     backgroundColor: '#1C3285',
     width: 400,
@@ -79,7 +75,14 @@ const style = {
   },
   Spinner: {
     marginLeft: 34
+  },
+  Hr: {
+    color: '#ccc'
   }
+  // EventDashboard: {
+  //   display: 'flex',
+  //   flexDirection: 'column'
+  // },
 };
 
 
@@ -142,6 +145,9 @@ class Events extends Component {
     base.listenTo('events', {
       context: this,
       asArray: true,
+      queries: {
+      orderByChild: 'date',
+    },
       then: (data) => {
         this.getLocation(data)
       }
@@ -190,9 +196,10 @@ class Events extends Component {
                                 <div >
                                 <Link style={style.Link} className="link" to={`/events/${event.title}`} activeClassName="active">
                                   <h2 style={style.Title}>{event.title}</h2>
-                                  <p style={style.EventInfo}>{event.date} at {event.time}</p>
+                                  <p style={style.EventInfo}>{event.date}</p>
+                                  <p style={style.EventInfo}>{event.time} {event.AmPm}</p>
                                   <p style={style.EventInfo}>{event.location}</p>
-                                  <hr />
+                                  <hr style={style.Hr} />
                                 </Link>
                                 </div>
                              </li>
@@ -205,12 +212,8 @@ class Events extends Component {
           </Paper>
       </MuiThemeProvider>
 
-      <CreateEvent dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username}/>
-      <Distance distance={this.state.distance} toggleDialog={this.toggleDistance} newLocation={this.newLocation}/>
-      <Calendar />
-
-
-      {this.props.children}
+      <CreateEvent uid={this.props.uid} dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username}/>
+      <EventList uid={this.props.uid} events={this.state.events} />
 
       </div>
     );
@@ -218,3 +221,8 @@ class Events extends Component {
 }
 
 export default Events;
+
+
+
+
+// <Distance distance={this.state.distance} toggleDialog={this.toggleDistance} newLocation={this.newLocation}/>

@@ -48,11 +48,6 @@ const style = {
     marginLeft: '-24px',
     color: 'white'
   },
-  EntryTextDiv: {
-    // maxWidth: 550,
-    // overflowX: 'hidden',
-    // wordWrap: 'break-word'
-  },
   EntryText: {
     paddingTop: 50,
     paddingBottom: 100,
@@ -63,7 +58,7 @@ const style = {
     fontFamily: 'Josefin Sans',
     lineHeight: 1.4,
     color: 'black',
-    whiteSpace: 'pre'
+    // whiteSpace: 'pre'
   },
   Title: {
     backgroundColor: '#1C3285',
@@ -93,6 +88,9 @@ class JournalArchive extends Component {
     base.listenTo(`users/${this.props.uid}/journal`, {
       context: this,
       asArray: true,
+      queries: {
+      orderByChild: 'date',
+      },
       then: (data) => {
         this.setState({
           archive: data

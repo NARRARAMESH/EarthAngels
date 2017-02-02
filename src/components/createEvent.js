@@ -4,18 +4,19 @@ import base from '../config.js'
 import axios from 'axios'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
-import TimePicker from 'material-ui/TimePicker';
-import DatePicker from 'material-ui/DatePicker';
 import Close from 'material-ui/svg-icons/navigation/close';
-// import Calendar from './calendar.js'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import moment from 'moment';
 
 const style = {
   Dialog: {
-    width: '500px',
-    height: '800px'
+    width: 500,
+    height: 800,
   },
   Menu: {
     backgroundColor: '#1C3285',
@@ -28,7 +29,8 @@ const style = {
   },
   TextArea: {
     width: 400,
-    height: 80
+    height: 80,
+    marginTop: 20
   },
   TextField: {
     width: 400,
@@ -38,8 +40,13 @@ const style = {
     width: 400,
   },
   TextField5: {
+    marginTop: 30,
     marginBottom: 50,
     width: 400,
+  },
+  Picker: {
+    marginLeft: 90,
+    marginTop: 10
   },
   CloseButton: {
     color: 'white',
@@ -64,20 +71,42 @@ const style = {
     fontWeight: 'bolder',
     fontSize: 16,
     display: 'block',
-    margin: 'auto'
+    margin: 'auto',
   },
+  TimeDiv: {
+    marginTop: 10,
+    display: 'flex',
+    justifyContent: 'center'
+  },
+   AmPm: {
+    width: 70
+  },
+  Time: {
+    width: 70
+  },
+  DatePicker: {
+    marginTop: 20,
+    marginLeft: 110
+  }
 };
 
 
 class CreateEvent extends Component {
+  constructor() {
+  super()
+  this.state = ({
+    startDate: moment(),
+    AmPm: "PM",
+    time: "time"
+  })
+}
 
 
   createEvent () {
-    if (this.title.value === "" || this.desc.value === "" || this.date.value === "" ||
-        this.time.value === "" || this.location.value === "") {
+    if (this.title.value === "" || this.desc.value === "" || this.location.value === "") {
       alert('Input fields cannot be blank')
     } else {
-      var location = this.location.input.value.trim()
+      var location = this.location.value.trim()
 
       axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyDrokgrRy4bLs2HvjuA5Qa2zRbXp-q3ERk`)
            .then(response => {
@@ -85,10 +114,12 @@ class CreateEvent extends Component {
              var lng = response.data.results[0].geometry.location.lng
              let event = {
                 createdBy: this.props.username,
-                title: this.title.input.value.trim(),
-                desc: this.desc.input.value.trim(),
-                date: this.date.refs.input.input.value.trim(),
-                time: this.time.refs.input.input.value.trim(),
+                title: this.title.value.trim(),
+                desc: this.desc.value.trim(),
+                date: this.state.startDate.format("dddd, MMMM Do"),
+                time: this.state.time,
+                AmPm: this.state.AmPm,
+
                 location: location,
                 lat: lat,
                 lng: lng
@@ -96,17 +127,32 @@ class CreateEvent extends Component {
             base.update(`events/${event.title}`, {
               data: event
             })
-            base.update(`users/${this.props.uid}/events/created/${event.title}`, {
-              data: {date: event.date, time: event.time, location: event.location}
+            base.update(`users/${this.props.uid}/events/${event.title}`, {
+              data: {title: event.title, date: event.date, time: event.time, location: event.location, created: true, AmPm: event.AmPm}
             })
-    this.title.input.value = ""
-    this.desc.input.value = ""
-    this.location.input.value = ""
+    this.title.value = ""
+    this.desc.value = ""
+    this.location.value = ""
      })
    }
    this.props.toggleDialog()
  }
 
+
+ handleAmPmChange = (event, index, AmPm) => {
+   this.setState({AmPm});
+ };
+
+ handleTimeChange = (event, index, time) => {
+   this.setState({time});
+ };
+
+ handleDateChange = (date) => {
+   console.log('date', date)
+  this.setState({
+    startDate: date
+  })
+}
 
   render() {
     return (
@@ -122,27 +168,61 @@ class CreateEvent extends Component {
                 </IconButton>
 
               </div>
-                  <TextField
-                  ref={input => this.title = input}
+                  <input
+                   ref={input => this.title = input}
                    style={style.TextField1}
-                   hintText="Event title"/>
+                   placeholder="Event title"/>
 
-                    <TextField style={style.TextArea}
-                     ref={input => this.desc = input}
-                     className="eventTextArea" placeholder="Description..."/>
+                  <input style={style.TextArea}
+                   ref={input => this.desc = input}
+                   placeholder="Description . . ."/>
 
-                  <DatePicker
-                   ref={input => this.date = input}
-                   hintText="Select date" mode="portrait"/>
+                   <div style={style.TimeDiv}>
+                     <SelectField
+                       value={this.state.time}
+                       onChange={this.handleTimeChange}
+                       maxHeight={200}
+                       style={style.Time}
+                       ref={input => this.time = input}
+                     >
+                       <MenuItem value="1" key="1" primaryText="1"  />
+                       <MenuItem value="2" key="2" primaryText="2" />
+                       <MenuItem value="3" key="3" primaryText="3"  />
+                       <MenuItem value="4" key="4" primaryText="4" />
+                       <MenuItem value="5" key="5" primaryText="5"  />
+                       <MenuItem value="6" key="6" primaryText="6" />
+                       <MenuItem value="7" key="7" primaryText="7"  />
+                       <MenuItem value="8" key="8" primaryText="8" />
+                       <MenuItem value="9" key="9" primaryText="9"  />
+                       <MenuItem value="10" key="10" primaryText="10" />
+                       <MenuItem value="11" key="11" primaryText="11"  />
+                       <MenuItem value="12" key="12" primaryText="12" />
+                     </SelectField>
 
-                  <TimePicker
-                   ref={input => this.time = input}
-                   hintText="Select time"/>
+                      <SelectField
+                        value={this.state.AmPm}
+                        onChange={this.handleAmPmChange}
+                        maxHeight={200}
+                        style={style.AmPm}
+                        ref={input => this.AmPm = input}
+                      >
+                        <MenuItem value="AM" key="1" primaryText="AM"  />
+                        <MenuItem value="PM" key="2" primaryText="PM" />
+                      </SelectField>
+                    </div>
 
-                 <TextField
+                   <div style={style.DatePicker}>
+                     <DatePicker
+                      selected={this.state.startDate}
+                      onChange={this.handleDateChange}
+                      ref={input => this.date = input}
+                     />
+                  </div>
+
+                 <input
                   ref={input => this.location = input}
                   style={style.TextField5}
-                  hintText="Location address"/>
+                  placeholder="Location address"/>
               <button style={style.Button} onClick={this.createEvent.bind(this)}>Create</button>
 
             </Dialog>

@@ -85,6 +85,9 @@ class Feed extends Component {
       context: this,
       state: 'feed',
       asArray: true,
+      queries: {
+      orderByChild: 'timeStamp',
+    }
     })
   }
 
@@ -163,6 +166,7 @@ likePost (likedPost) {
 
 
   render() {
+    console.log('this.state.feed is', this.state.feed)
     var feedCopy = this.state.feed.slice(0)
     var feedReverse = feedCopy.reverse()
     return (

@@ -11,6 +11,7 @@ import Language from 'material-ui/svg-icons/action/language';
 import IconButton from 'material-ui/IconButton';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import Chat from 'material-ui/svg-icons/communication/chat';
 import Popover from 'material-ui/Popover/Popover';
 import Favorite from 'material-ui/svg-icons/action/favorite';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -70,13 +71,9 @@ const style = {
     margin: 'auto',
     width: 70,
     height: 70,
-    marginTop: 20,
-    // marginLeft: 5,
-  },
-  Notifications: {
-    color: '#f79e9e',
-    marginLeft: 32,
-    fontSize: 20,
+    marginLeft: -35,
+    marginTop: -15,
+    position: 'relative'
   },
   List: {
     listStyleType: 'none',
@@ -84,6 +81,16 @@ const style = {
     paddingBottom: 5,
     paddingLeft: 20,
     paddingRight: 20
+  },
+  Notifications: {
+    color: 'white',
+    fontSize: 23,
+    fontWeight: 'bolder',
+    textAlign: 'center',
+    marginTop: -11,
+    marginLeft: 69,
+    position: 'absolute',
+    zIndex: 1
   },
   NotificationAlert: {
     fontSize: 20,
@@ -99,6 +106,12 @@ const style = {
     marginLeft: 260,
     marginBottom: -20,
     color: "#ccc"
+  },
+  ChatIcon: {
+    color: 'white',
+    width: 55,
+    height: 55,
+    marginTop: 30,
   }
 };
 
@@ -129,7 +142,6 @@ class Sidebar extends Component {
       context: this,
       asArray: true,
       then: (data) => {
-        console.log('data is', data)
         this.setState({
           notifications: data
         })
@@ -161,6 +173,7 @@ class Sidebar extends Component {
     this.setState({
       open: false,
     })
+    base.remove(`likes/${this.props.uid}`)
   }
 
   timeSince (date) {
@@ -201,6 +214,14 @@ class Sidebar extends Component {
     }
     return interval + ' ' + intervalType + ' ago';
 }
+
+
+renderNotificationAmount () {
+  if (this.state.notifications.length !== 0) {
+  return <p style={style.Notifications}>{this.state.notifications.length}</p>
+  }
+}
+
 
 
   render() {
@@ -256,7 +277,7 @@ class Sidebar extends Component {
                 </Link>
               </MuiThemeProvider>
 
-              <IconButton onClick={this.handleTouchTap.bind()} tooltip="notifications" tooltipPosition="right">
+              <IconButton onClick={this.handleTouchTap.bind()} tooltip="notifications" tooltipPosition="bottom-right">
                 <Checkbox
                   checked={true}
                   checkedIcon={<ActionFavorite />}
@@ -264,7 +285,14 @@ class Sidebar extends Component {
                   style={style.Color}
                 />
               </IconButton>
-              <span style={style.Notifications}>{this.state.notifications.length}</span>
+
+              <IconButton iconStyle={style.ChatIcon}>
+                <Chat />
+              </IconButton>
+
+
+
+              {this.renderNotificationAmount()}
 
               <Popover
                 style={style.Popover}
@@ -283,7 +311,7 @@ class Sidebar extends Component {
                 {notificationsReverse.map((notification, index) => {
                   return (
                     <li key={index}>
-                      <p style={style.NotificationAlert}>{notification.username} liked your post:</p>
+                      <p style={style.NotificationAlert}>{notification.username} loved your post:</p>
                       <p style={style.NotificationText}>"{notification.text}"</p>
                       <p style={style.NotificationTime}>{this.timeSince(notification.time)}</p>
                       <hr/>

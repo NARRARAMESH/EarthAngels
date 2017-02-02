@@ -7,6 +7,7 @@ import Card from 'material-ui/Card';
 import AppBar from 'material-ui/AppBar';
 import CloudDone from 'material-ui/svg-icons/file/cloud-done';
 import Comments from './comments.js'
+import Attendees from './attendees.js'
 import {Gmaps, Marker} from 'react-gmaps';
 
 
@@ -18,7 +19,7 @@ const style = {
     marginLeft: 100
   },
   Paper: {
-    height: 900,
+    height: 930,
     width: 600,
     marginLeft: 250,
     marginTop: 60,
@@ -29,7 +30,8 @@ const style = {
   Div: {
     marginRight: 40,
     paddingTop: 5,
-    paddingBottom: 20
+    paddingBottom: 20,
+    marginTop: -30
   },
   Card: {
     backgroundColor: '#edfbff',
@@ -93,6 +95,7 @@ const style = {
     backgroundColor: '#1C3285',
     maxWidth: '100%',
     color: 'white',
+    marginTop: 15,
     opacity: .95,
     borderRadius: 5,
     padding: 10,
@@ -109,8 +112,11 @@ const style = {
     width: 440,
     height: 440,
     backgroundColor: 'white',
-    marginTop: 135,
+    marginTop: 125,
     marginLeft: 40
+  },
+  AppBarTitle: {
+    marginLeft: 270
   }
 };
 
@@ -119,16 +125,26 @@ class EventFull extends Component {
   constructor() {
   super()
   this.state = ({
-    event: {}
+    event: {},
+    title: "✓ to attend",
+    isAttending: {}
   })
 }
 
-componentDidMount () {
+componentDidMount() {
     base.fetch(`events/${this.props.params.eventFull}`, {
       context: this,
       then: (data) => {
         this.setState({
           event: data
+        })
+        base.listenTo(`users/${this.props.uid}/events/${this.state.event.title}`, {
+          context: this,
+          then: (data) => {
+            this.setState({
+              isAttending: data
+            })
+          }
         })
       }
     })
@@ -137,11 +153,12 @@ componentDidMount () {
 
   attendEvent () {
     base.update(`events/${this.state.event.title}/attending/users/${this.props.uid}`, {
-      data: {username: this.props.username}
+      data: {username: this.props.username, avatar: this.props.avatar}
     })
-    base.update(`users/${this.props.uid}/events/attending/${this.state.event.title}`, {
-      data: {date: this.state.event.date, time: this.state.event.time, location: this.state.event.location}
+    base.update(`users/${this.props.uid}/events/${this.state.event.title}`, {
+      data: {title: this.state.event.title, date: this.state.event.date, time: this.state.event.time, location: this.state.event.location, isAttending: true}
     })
+    this.setState({title: "Attending"})
   }
 
 
@@ -173,6 +190,30 @@ componentDidMount () {
     }
   }
 
+  renderButton () {
+    if (this.state.isAttending.isAttending === true || this.state.isAttending.created === true ) {
+      return null
+    } else {
+      return <button
+              onClick={this.attendEvent.bind(this)}
+              style={style.Button}
+              >
+                <CloudDone style={style.CloudDone}/>
+              </button>
+      }
+  }
+
+  renderTitle () {
+    if (this.state.isAttending.created === true ) {
+      return "Your Event"
+    }
+    if (this.state.isAttending.isAttending === true ) {
+      return "Attending"
+    } else {
+      return this.state.title
+      }
+  }
+
   render() {
     return (
       <div style={style.Events}>
@@ -180,14 +221,10 @@ componentDidMount () {
       <MuiThemeProvider>
           <Paper style={style.Paper} zDepth={2}>
           <AppBar
+            title={this.renderTitle()}
+            titleStyle={style.AppBarTitle}
             showMenuIconButton={false}
-            iconElementRight={<button
-                              onClick={this.attendEvent.bind(this)}
-                              style={style.Button}
-                              >
-                                <CloudDone style={style.CloudDone}/>
-                              </button>
-                             }
+            iconElementRight={this.renderButton()}
           />
           <Card style={style.Card}>
 
@@ -207,6 +244,7 @@ componentDidMount () {
           </Card>
 
           <Comments uid={this.props.uid} username={this.props.username} event={this.state.event} avatar={this.props.avatar}/>
+          <Attendees eventTitle={this.state.event.title} uid={this.props.uid} username={this.props.username} event={this.state.event} avatar={this.props.avatar}/>
 
           </Paper>
       </MuiThemeProvider>

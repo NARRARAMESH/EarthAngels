@@ -77,7 +77,6 @@ class Comments extends Component {
         context: this,
         asArray: true,
         then: (data) => {
-          console.log('data is', data)
           this.setState({
             comments: data
           })

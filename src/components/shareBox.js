@@ -8,14 +8,14 @@ import FilterDrama from 'material-ui/svg-icons/image/filter-drama';
 const style = {
   Div: {
     backgroundColor: '#edfbff',
-    height: 190
+    height: 210,
   },
   Input: {
     display: 'block',
-    marginLeft: '3.3%',
+    marginLeft: '4.5%',
     float: 'left',
     width: '90%',
-    height: 60,
+    height: 80,
     marginTop: 50,
     marginBottom: 15
   },
@@ -132,11 +132,6 @@ renderButton () {
 
 post () {
   var time = new Date() + ''
-  if (this.textArea.value === "") {
-    alert('Please type about your kindness')
-  } else if (this.textArea.value.length > 150) {
-    alert('Please shorten your post')
-  }
     let post = {
     uid: this.props.uid,
     username: this.props.username,
