@@ -129,12 +129,12 @@ class ToDoList extends Component {
   // }
 
   completeItem(clickedItem) {
+    var elapsedTime = new Date() + ''
+    var timeStamp = Date.now()
     var item = this.state.todos.filter(item => item === clickedItem)
     base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
-      data: {complete: true},
+      data: {complete: true, elapsedTime: elapsedTime},
       then: () => {
-        var elapsedTime = new Date() + ''
-        var timeStamp = Date.now()
         if (item[0].public === true) {
         this.showMessage()
         base.update(`feed/${timeStamp}`, {
@@ -142,6 +142,9 @@ class ToDoList extends Component {
       })
      }
    }
+  })
+  base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
+    data: {elapsedTime: elapsedTime}
   })
 }
 

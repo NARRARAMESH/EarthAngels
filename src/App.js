@@ -83,7 +83,7 @@ class App extends Component {
            })
          } else {
            base.update(`users/${user.uid}`, {
-             data: {uID: user.uid},
+             data: {uID: user.uid, username: user.displayName, avatar: user.photoURL},
            })
          }
        }
@@ -100,9 +100,6 @@ class App extends Component {
     this.unsubscribe()
   }
 
-
-  // logInOpen = () => this.setState({ logInOpen: true })
-  // logInClose = () => this.setState({ logInOpen: false })
 
   toggleToDo = () => this.setState({toDo: !this.state.toDo});
   closeToDo = () => this.setState({toDo: false});
@@ -136,9 +133,9 @@ class App extends Component {
                username={this.state.username}
                uid={this.state.uid}
       />
-    )
+      )
+    }
   }
-}
 
 
   render() {
@@ -176,3 +173,7 @@ class App extends Component {
 }
 
 export default App;
+
+
+// logInOpen = () => this.setState({ logInOpen: true })
+// logInClose = () => this.setState({ logInOpen: false })

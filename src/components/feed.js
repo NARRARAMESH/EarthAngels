@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
+import { Link } from 'react-router'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import ShareBox from './shareBox.js';
@@ -38,6 +39,9 @@ const style = {
   },
   FeedUL: {
     listStyleType: 'none'
+  },
+  Link: {
+    textDecoration: 'none'
   },
   Username: {
     fontFamily: 'Cinzel Decorative',
@@ -182,21 +186,24 @@ likePost (likedPost) {
             <ul style={style.FeedUL}>
               {feedReverse.map((post, index) => {
                   return <li key={index}>
-                            <div>
-                              <p style={style.Time}>{this.timeSince(post.elapsedTime)}</p>
-                              <img src={post.avatar} style={style.Avatar} role="presentation" />
-                              <p style={style.Username}><strong>{post.username}</strong></p>
-                              <p style={style.PostText}>{post.text}</p>
-                              <Checkbox
-                                checkedIcon={<ActionFavorite />}
-                                uncheckedIcon={<ActionFavoriteBorder />}
-                                onCheck={this.likePost.bind(this, post)}
-                                style={style.Heart}
-                              />
-                              {this.renderLikeCount(post.likeCount)}
-                              <hr />
+                              <div>
+                                <p style={style.Time}>{this.timeSince(post.elapsedTime)}</p>
+                                <img src={post.avatar} style={style.Avatar} role="presentation" />
 
-                            </div>
+                                <Link style={style.Link} className="link" to={`/profile/${post.uid}`} activeClassName="active">
+                                  <p style={style.Username}><strong>{post.username}</strong></p>
+                                </Link>
+
+                                <p style={style.PostText}>{post.text}</p>
+                                <Checkbox
+                                  checkedIcon={<ActionFavorite />}
+                                  uncheckedIcon={<ActionFavoriteBorder />}
+                                  onCheck={this.likePost.bind(this, post)}
+                                  style={style.Heart}
+                                />
+                                {this.renderLikeCount(post.likeCount)}
+                                <hr />
+                              </div>
                          </li>
                 })
               }

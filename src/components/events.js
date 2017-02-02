@@ -12,7 +12,6 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 import { Link } from 'react-router'
 import CreateEvent from './createEvent.js';
 import EventList from './eventList.js';
-// import Distance from './distance.js'
 import CircularProgress from 'material-ui/CircularProgress';
 
 
@@ -127,20 +126,6 @@ class Events extends Component {
     })
   }
 
-  // newLocation (distance) {
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //       this.setState({
-  //         deviceLat: position.coords.latitude,
-  //         deviceLng: position.coords.longitude
-  //       })
-  //       var localEvents = this.state.events.filter((event) => this.localizeEvents(event.lat, event.lng) <= distance)
-  //       this.setState({
-  //         events: localEvents
-  //       })
-  //   })
-  // }
-
-
   componentDidMount () {
     base.listenTo('events', {
       context: this,
@@ -226,3 +211,16 @@ export default Events;
 
 
 // <Distance distance={this.state.distance} toggleDialog={this.toggleDistance} newLocation={this.newLocation}/>
+
+// newLocation (distance) {
+//   navigator.geolocation.getCurrentPosition((position) => {
+//       this.setState({
+//         deviceLat: position.coords.latitude,
+//         deviceLng: position.coords.longitude
+//       })
+//       var localEvents = this.state.events.filter((event) => this.localizeEvents(event.lat, event.lng) <= distance)
+//       this.setState({
+//         events: localEvents
+//       })
+//   })
+// }

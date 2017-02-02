@@ -153,7 +153,7 @@ componentDidMount() {
 
   attendEvent () {
     base.update(`events/${this.state.event.title}/attending/users/${this.props.uid}`, {
-      data: {username: this.props.username, avatar: this.props.avatar}
+      data: {uid: this.props.uid, username: this.props.username, avatar: this.props.avatar}
     })
     base.update(`users/${this.props.uid}/events/${this.state.event.title}`, {
       data: {title: this.state.event.title, date: this.state.event.date, time: this.state.event.time, location: this.state.event.location, isAttending: true}
@@ -162,11 +162,11 @@ componentDidMount() {
   }
 
 
-    onMapCreated (map) {
-      map.setOptions({
-        disableDefaultUI: true
-      })
-    }
+  onMapCreated (map) {
+    map.setOptions({
+      disableDefaultUI: true
+    })
+  }
 
 
   renderMap () {

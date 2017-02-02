@@ -42,6 +42,9 @@ const style = {
     marginTop: 17,
     fontWeight: 'bolder'
   },
+  Link: {
+    textDecoration: 'none'
+  },
   AOK: {
     color: 'white',
     fontSize: 16,
@@ -236,7 +239,9 @@ renderNotificationAmount () {
             >
             <img src={this.props.avatar} style={style.Avatar} role="presentation" className="sidebarAvatar" />
 
-            <h5 style={style.UserName}>{this.props.username}</h5>
+            <Link style={style.Link} className="link" to={`/profile/${this.props.uid}`} activeClassName="active">
+              <h5 style={style.UserName}>{this.props.username}</h5>
+            </Link>
 
             <p style={style.AOK}>Acts of Kindness: {this.state.completeTodos.filter(item => item.complete === true).length} </p>
 

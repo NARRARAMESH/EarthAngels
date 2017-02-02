@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
+import { Link } from 'react-router'
 import Paper from 'material-ui/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Favorite from 'material-ui/svg-icons/action/favorite';
@@ -78,7 +79,9 @@ class Attendees extends Component {
                     return <li key={index}>
                               <div>
                                   <img src={attendee.avatar} style={style.Avatar} role="presentation" />
-                                  <h1 style={style.Username}>{attendee.username}</h1>
+                                  <Link style={style.Link} className="link" to={`/profile/${attendee.uid}`} activeClassName="active">
+                                    <h1 style={style.Username}>{attendee.username}</h1>
+                                  </Link>
                               </div>
                               <hr />
       					           </li>

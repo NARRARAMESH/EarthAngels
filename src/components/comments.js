@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
-// import Delete from 'material-ui/svg-icons/action/delete';
+import { Link } from 'react-router'
 import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import InfiniteScroll from 'react-infinite-scroll-component';
+// import Delete from 'material-ui/svg-icons/action/delete';
+
 
 const style = {
   List: {
@@ -92,7 +94,7 @@ class Comments extends Component {
       } else {
       var time = new Date() + ''
       base.push(`comments/${this.props.event.title}`, {
-        data: {username: this.props.username, text: this.input.input.value.trim(), avatar: this.props.avatar, timeStamp: time }
+        data: {uid: this.props.uid, username: this.props.username, text: this.input.input.value.trim(), avatar: this.props.avatar, timeStamp: time }
       })
       this.input.input.value = ""
      }
@@ -158,7 +160,9 @@ class Comments extends Component {
                               <div>
                                   <p style={style.Time}>{this.timeSince(comment.timeStamp)}</p>
                                   <img src={this.props.avatar} style={style.Avatar} role="presentation" />
-                                  <p style={style.Username}>{this.props.username}</p>
+                                  <Link style={style.Link} className="link" to={`/profile/${comment.uid}`} activeClassName="active">
+                                    <p style={style.Username}>{this.props.username}</p>
+                                  </Link>
                                   <p style={style.CommentText}>{comment.text}</p>
                               </div>
                               <hr />
