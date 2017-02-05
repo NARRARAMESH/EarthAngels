@@ -75,8 +75,9 @@ class ToDoList extends Component {
     super()
     this.state = {
       todos: [],
-      editing: false,
-      open: false
+      open: false,
+      // inputValue: '',
+      // editing: false,
     }
   }
 
@@ -167,6 +168,16 @@ class ToDoList extends Component {
     });
   };
 
+  editingState () {
+    this.setState({
+      editing: true
+    });
+  }
+
+  startEditing (text) {
+    if (this.state.editing === true)
+    return <input value={text}/>
+  }
 
 
   render() {
@@ -190,6 +201,8 @@ class ToDoList extends Component {
                                 </IconButton>
 
                                 <p style={style.ItemText}>{item.text}</p>
+
+
                                 <IconButton iconStyle={style.Delete}>
                                   <Delete  onClick={this.deleteItem.bind(this, item)}/>
                                 </IconButton>

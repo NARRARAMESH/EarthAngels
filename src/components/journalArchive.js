@@ -9,6 +9,7 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 import Dialog from 'material-ui/Dialog';
 import Close from 'material-ui/svg-icons/navigation/close';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Delete from 'material-ui/svg-icons/action/delete';
 
 
 const style = {
@@ -70,6 +71,13 @@ const style = {
     borderRadius: 5,
     padding: 10,
     boxShadow: '1px 1.5px 2px  gray',
+  },
+  Delete: {
+    color: '#f79e9e',
+    width: 18,
+    height: 18,
+    marginLeft: -20,
+    marginBottom: 0
   }
 };
 
@@ -85,16 +93,12 @@ class JournalArchive extends Component {
 }
 
   componentWillReceiveProps(props) {
-    base.listenTo(`users/${this.props.uid}/journal`, {
+    base.syncState(`users/${this.props.uid}/journal`, {
       context: this,
+      state: 'archive',
       asArray: true,
       queries: {
       orderByChild: 'timeStamp',
-      },
-      then: (data) => {
-        this.setState({
-          archive: data
-        })
       }
     })
   }
@@ -106,8 +110,17 @@ class JournalArchive extends Component {
 
   closeEntry = () => this.setState({ dialog: !this.state.dialog })
 
+  deleteEntry(clickedEntry) {
+    var newEntryArray = this.state.archive.filter(entry => entry !==clickedEntry)
+    this.setState({
+      archive: newEntryArray
+    })
+  }
+
 
   render() {
+    var archiveCopy = this.state.archive.slice(0)
+    var archiveReverse = archiveCopy.reverse()
     return (
       <div style={style.Div}>
       <h3 style={style.Title}>Archive</h3>
@@ -119,14 +132,16 @@ class JournalArchive extends Component {
         endMessage={<Favorite />}
         loader={<h4>Loading...</h4>}>
       <ul style={style.List}>
-        {this.state.archive.map((entry, index) => {
-            return <li key={index} onClick={this.expandEntry.bind(this, entry)}>
-                      <IconButton tooltip="expand" tooltipPosition="top-center">
-                        <ImportContacts  />
-                      </IconButton>
-
+        {archiveReverse.map((entry, index) => {
+            return <li key={index}>
+                        <IconButton onClick={this.expandEntry.bind(this, entry)} tooltip="expand" tooltipPosition="top-center" >
+                          <ImportContacts  />
+                        </IconButton>
                         <p><em>{entry.date}</em></p>
                         <p>{(entry.text).substr(0, 50)}</p>
+                        <IconButton iconStyle={style.Delete}>
+                          <Delete  onClick={this.deleteEntry.bind(this, entry)}/>
+                        </IconButton>
                         <hr />
                    </li>
                  })
@@ -152,8 +167,6 @@ class JournalArchive extends Component {
               <p style={style.EntryText}>{this.state.entry.text}</p>
             </div>
             </InfiniteScroll>
-
-
           </Dialog>
       </MuiThemeProvider>
 

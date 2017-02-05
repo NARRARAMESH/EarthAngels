@@ -6,7 +6,7 @@ import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import InfiniteScroll from 'react-infinite-scroll-component';
-// import Delete from 'material-ui/svg-icons/action/delete';
+import Delete from 'material-ui/svg-icons/action/delete';
 
 
 const style = {
@@ -53,15 +53,14 @@ const style = {
     float: 'right',
     marginRight: 40,
     fontWeight: 'lighter'
+  },
+  Delete: {
+    color: '#f79e9e',
+    width: 18,
+    height: 18,
+    marginLeft: -600,
+    marginBottom: 0
   }
-  // Delete: {
-  //   color: '#f79e9e',
-  //   width: 18,
-  //   height: 18,
-  //   marginRight: -300,
-  //   marginTop: -200,
-  //   marginBottom: 0
-  // }
 }
 
 
@@ -75,14 +74,10 @@ class Comments extends Component {
 
   componentWillReceiveProps (props) {
       if (this.props.event.title !== "") {
-      base.listenTo(`comments/${this.props.event.title}`, {
+      base.syncState(`comments/${this.props.event.title}`, {
         context: this,
-        asArray: true,
-        then: (data) => {
-          this.setState({
-            comments: data
-          })
-        }
+        state: 'comments',
+        asArray: true
       })
      }
     }
@@ -145,6 +140,21 @@ class Comments extends Component {
     return interval + ' ' + intervalType + ' ago';
 }
 
+  renderDeleteButton (comment) {
+    if (comment.uid === this.props.uid)
+      return (
+        <IconButton iconStyle={style.Delete}>
+          <Delete  onClick={this.deleteComment.bind(this, comment)}/>
+        </IconButton>
+      )
+  }
+
+  deleteComment(clickedComment) {
+    var newCommentArray = this.state.comments.filter(comment => comment !==clickedComment)
+    this.setState({
+      comments: newCommentArray
+    })
+  }
 
   render() {
     return (
@@ -159,11 +169,13 @@ class Comments extends Component {
                     return <li key={index}>
                               <div>
                                   <p style={style.Time}>{this.timeSince(comment.timeStamp)}</p>
-                                  <img src={this.props.avatar} style={style.Avatar} role="presentation" />
                                   <Link style={style.Link} className="link" to={`/profile/${comment.uid}`} activeClassName="active">
+                                    <img src={this.props.avatar} style={style.Avatar} role="presentation" />
                                     <p style={style.Username}>{this.props.username}</p>
                                   </Link>
                                   <p style={style.CommentText}>{comment.text}</p>
+                                  {this.renderDeleteButton(comment)}
+
                               </div>
                               <hr />
       					           </li>

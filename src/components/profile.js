@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router'
+import { Link } from 'react-router'
 import base from '../config.js'
 import '../App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -22,7 +22,7 @@ const style = {
     width: 900,
     backgroundColor: 'white',
     marginTop: 50,
-
+    marginLeft: 400,
   },
   Header: {
     top: 0,
@@ -43,14 +43,23 @@ const style = {
     width: 150,
     height: 150,
     borderRadius: 100,
-    border: 'none'
+    border: 'none',
+    boxShadow: '0px 1.5px 1.5px gray',
+  },
+  AOKnumber: {
+    fontFamily: 'Cinzel Decorative',
+    paddingTop: 120,
+    textAlign: 'center',
+    fontSize: 44,
+    marginTop: 0,
+    marginLeft: 0,
+    color: '#5DBCD2'
   },
   AOK: {
-    paddingTop: 140,
     textAlign: 'center',
     fontSize: 22,
-    marginTop: 0,
-    marginLeft: -5
+    marginTop: -40,
+    marginLeft: 0
   },
   List: {
     listStyleType: 'none',
@@ -75,7 +84,16 @@ const style = {
   },
   AOKText: {
     marginLeft: 100,
-    marginBottom: -22
+    marginBottom: -22,
+    fontSize: 20
+  },
+  Wings: {
+    height: 100,
+    width: 100,
+    float: 'left',
+    marginLeft: 30,
+    marginTop: 20
+
   }
 };
 
@@ -85,6 +103,7 @@ class Profile extends Component {
     super()
     this.state = {
       user: {},
+      uid: "",
       username: "Loading",
       avatar: "",
       AOKs: [],
@@ -98,9 +117,9 @@ class Profile extends Component {
     base.listenTo(`users/${this.props.params.uid}/`, {
       context: this,
       then: (data) => {
-        console.log('profile data is', data)
         this.setState({
           user: data,
+          uid: data.uID,
           username: data.username,
           avatar: data.avatar,
           AOKs: data.todos,
@@ -150,7 +169,6 @@ class Profile extends Component {
     return interval + ' ' + intervalType + ' ago';
   }
 
-
   // renderChatIcon () {
   //   if (this.props.params.uid !== this.props.uid ) {
   //     return <IconButton iconStyle={style.ChatIcon}>
@@ -159,13 +177,13 @@ class Profile extends Component {
   //   }
   // }
 
+  chatRoute () {
+    var uids = [`${this.props.uid}`, `${this.state.uid}`]
+    var uidsAlph = uids.sort()
+    return `/chats/${uidsAlph[0]}/${uidsAlph[1]}`
+  }
+
   render() {
-    console.log('this.state.username is', this.state.username)
-    console.log('this.state.avatar is', this.state.avatar)
-    console.log('this.state.AOKs is', this.state.AOKs)
-    console.log('this.state.AOKs is', this.state.AOKs)
-
-
     var AOKsCopy = this.state.AOKs.slice(0)
     var AOKsReverse = AOKsCopy.reverse()
     return (
@@ -174,14 +192,19 @@ class Profile extends Component {
         <MuiThemeProvider>
             <Paper style={style.Paper}>
             <div style={style.Header}>
+
+            <Link style={style.Link} className="link" to={this.chatRoute()} activeClassName="active">
               <IconButton iconStyle={style.ChatIcon}>
                 <Chat />
               </IconButton>
+            </Link>
+
               <h5 style={style.UserName}>{this.state.username}</h5>
               <img src={this.state.avatar} style={style.Avatar} role="presentation" className="sidebarAvatar" />
             </div>
 
-            <p style={style.AOK}>Acts of Kindness: {this.state.AOKs.filter(item => item.complete === true).length} </p>
+            <p style={style.AOKnumber}>{this.state.AOKs.filter(item => item.complete === true).length}</p>
+            <p style={style.AOK}>Acts of Kindness</p>
 
               <InfiniteScroll
                 height={500}
@@ -190,7 +213,7 @@ class Profile extends Component {
 
               <ul style={style.List}>
                 {AOKsReverse.map((AOK, index) => {
-                  if (AOK.complete === true) {
+                  if (AOK.complete === true && AOK.public === true) {
                   return (
                     <li key={index}>
                       <p style={style.AOKText}>{AOK.text}</p>
@@ -200,6 +223,7 @@ class Profile extends Component {
                     </li>
                   )
                  }
+                 return null
                 })
               }
               </ul>
@@ -213,3 +237,5 @@ class Profile extends Component {
 }
 
 export default Profile;
+
+// <img style={style.Wings} src={require('../images/goldAngel.png')} />

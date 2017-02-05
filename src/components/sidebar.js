@@ -57,6 +57,7 @@ const style = {
     marginRight: 15,
     width: 20,
     height: 20,
+    marginLeft: -20
   },
   icon2: {
     color: 'white',
@@ -64,6 +65,13 @@ const style = {
     marginLeft: -50,
     width: 20,
     height: 20,
+  },
+  icon3: {
+    color: 'white',
+    marginRight: 15,
+    width: 20,
+    height: 20,
+    marginLeft: -50
   },
   Popover: {
     maxWidth: 400,
@@ -237,9 +245,8 @@ renderNotificationAmount () {
             <Paper
               style={style.Paper}
             >
-            <img src={this.props.avatar} style={style.Avatar} role="presentation" className="sidebarAvatar" />
-
             <Link style={style.Link} className="link" to={`/profile/${this.props.uid}`} activeClassName="active">
+              <img src={this.props.avatar} style={style.Avatar} role="presentation" className="sidebarAvatar" />
               <h5 style={style.UserName}>{this.props.username}</h5>
             </Link>
 
@@ -251,7 +258,7 @@ renderNotificationAmount () {
                 <Link to="/feedofKindness" activeClassName="active">
                   <button className="sidebarButton" >
                     <FilterDrama style={style.icon}/>
-                  Earth Angels Live
+                  Live Feed
                   </button>
                 </Link>
               </MuiThemeProvider>
@@ -277,8 +284,8 @@ renderNotificationAmount () {
               <MuiThemeProvider>
                 <Link to="/events" activeClassName="active">
                   <button className="sidebarButton">
-                    <Language style={style.icon}/>
-                    Angel Events
+                    <Language style={style.icon3}/>
+                    Events
                   </button>
                 </Link>
               </MuiThemeProvider>
@@ -292,11 +299,11 @@ renderNotificationAmount () {
                 />
               </IconButton>
 
-              <IconButton iconStyle={style.ChatIcon}>
-                <Chat />
-              </IconButton>
-
-
+              <Link style={style.Link} className="link" to={`/chats`} activeClassName="active">
+                <IconButton iconStyle={style.ChatIcon}>
+                  <Chat />
+                </IconButton>
+              </Link>
 
               {this.renderNotificationAmount()}
 
@@ -304,8 +311,8 @@ renderNotificationAmount () {
                 style={style.Popover}
                 open={this.state.open}
                 anchorEl={this.state.anchorEl}
-                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
                 onRequestClose={this.handleRequestClose}
               >
               <InfiniteScroll

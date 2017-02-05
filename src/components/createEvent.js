@@ -8,7 +8,6 @@ import IconButton from 'material-ui/IconButton';
 import Close from 'material-ui/svg-icons/navigation/close';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import moment from 'moment';
@@ -114,6 +113,8 @@ class CreateEvent extends Component {
              var lng = response.data.results[0].geometry.location.lng
              let event = {
                 createdBy: this.props.username,
+                creatorAvatar: this.props.avatar,
+                creatorUid: this.props.uid,
                 title: this.title.value.trim(),
                 desc: this.desc.value.trim(),
                 date: this.state.startDate.format("dddd, MMMM Do"),
@@ -155,6 +156,7 @@ class CreateEvent extends Component {
 }
 
   render() {
+    console.log('this.props.avatar is', this.props.avatar)
     return (
       <div style={style.Events}>
 

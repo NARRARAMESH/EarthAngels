@@ -197,7 +197,7 @@ class Events extends Component {
           </Paper>
       </MuiThemeProvider>
 
-      <CreateEvent uid={this.props.uid} dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username}/>
+      <CreateEvent uid={this.props.uid} dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username} avatar={this.props.avatar}/>
       <EventList uid={this.props.uid} events={this.state.events} />
 
       </div>

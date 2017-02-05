@@ -10,7 +10,8 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
-
+import Delete from 'material-ui/svg-icons/action/delete';
+import IconButton from 'material-ui/IconButton';
 
 
 const style = {
@@ -71,6 +72,13 @@ const style = {
     color: '#ccc',
     marginLeft: 450,
     fontSize: 12
+  },
+  Delete: {
+    color: '#f79e9e',
+    width: 18,
+    height: 18,
+    marginLeft: -600,
+    marginBottom: 0
   }
 };
 
@@ -104,46 +112,6 @@ class Feed extends Component {
    }
 
 
-  timeSince (date) {
-    if (typeof date !== 'object') {
-        date = new Date(date);
-    }
-    var seconds = Math.floor((new Date() - date) / 1000);
-    var intervalType;
-    var interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) {
-        intervalType = 'year';
-    } else {
-        interval = Math.floor(seconds / 2592000);
-        if (interval >= 1) {
-            intervalType = 'month';
-        } else {
-            interval = Math.floor(seconds / 86400);
-            if (interval >= 1) {
-                intervalType = 'day';
-            } else {
-                interval = Math.floor(seconds / 3600);
-                if (interval >= 1) {
-                    intervalType = "hour";
-                } else {
-                    interval = Math.floor(seconds / 60);
-                    if (interval >= 1) {
-                        intervalType = "minute";
-                    } else {
-                        interval = seconds;
-                        intervalType = "second";
-                    }
-                }
-            }
-        }
-    }
-    if (interval > 1 || interval === 0) {
-        intervalType += 's';
-    }
-    return interval + ' ' + intervalType + ' ago';
-}
-
-
 likePost (likedPost) {
   var post = this.state.feed.filter(post => post === likedPost)
   var likeCount = post[0].likeCount
@@ -168,6 +136,62 @@ likePost (likedPost) {
     }
   }
 
+  renderDeleteButton (post) {
+    if (post.uid === this.props.uid)
+      return (
+        <IconButton iconStyle={style.Delete}>
+          <Delete  onClick={this.deletePost.bind(this, post)}/>
+        </IconButton>
+      )
+  }
+
+  deletePost (clickedPost) {
+    var newFeedArray = this.state.feed.filter(post => post !==clickedPost)
+    this.setState({
+      feed: newFeedArray
+    })
+  }
+
+
+    timeSince (date) {
+      if (typeof date !== 'object') {
+          date = new Date(date);
+      }
+      var seconds = Math.floor((new Date() - date) / 1000);
+      var intervalType;
+      var interval = Math.floor(seconds / 31536000);
+      if (interval >= 1) {
+          intervalType = 'year';
+      } else {
+          interval = Math.floor(seconds / 2592000);
+          if (interval >= 1) {
+              intervalType = 'month';
+          } else {
+              interval = Math.floor(seconds / 86400);
+              if (interval >= 1) {
+                  intervalType = 'day';
+              } else {
+                  interval = Math.floor(seconds / 3600);
+                  if (interval >= 1) {
+                      intervalType = "hour";
+                  } else {
+                      interval = Math.floor(seconds / 60);
+                      if (interval >= 1) {
+                          intervalType = "minute";
+                      } else {
+                          interval = seconds;
+                          intervalType = "second";
+                      }
+                  }
+              }
+          }
+      }
+      if (interval > 1 || interval === 0) {
+          intervalType += 's';
+      }
+      return interval + ' ' + intervalType + ' ago';
+  }
+
 
   render() {
     var feedCopy = this.state.feed.slice(0)
@@ -188,13 +212,16 @@ likePost (likedPost) {
                   return <li key={index}>
                               <div>
                                 <p style={style.Time}>{this.timeSince(post.elapsedTime)}</p>
-                                <img src={post.avatar} style={style.Avatar} role="presentation" />
 
                                 <Link style={style.Link} className="link" to={`/profile/${post.uid}`} activeClassName="active">
+                                  <img src={post.avatar} style={style.Avatar} role="presentation" />
                                   <p style={style.Username}><strong>{post.username}</strong></p>
                                 </Link>
 
                                 <p style={style.PostText}>{post.text}</p>
+
+                                {this.renderDeleteButton(post)}
+
                                 <Checkbox
                                   checkedIcon={<ActionFavorite />}
                                   uncheckedIcon={<ActionFavoriteBorder />}
@@ -203,6 +230,7 @@ likePost (likedPost) {
                                 />
                                 {this.renderLikeCount(post.likeCount)}
                                 <hr />
+
                               </div>
                          </li>
                 })

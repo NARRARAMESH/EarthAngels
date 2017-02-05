@@ -11,12 +11,13 @@ import AppBar from 'material-ui/AppBar';
 const style = {
   Paper: {
     width: 440,
-    height: 300,
+    height: 360,
     marginTop: -300,
     marginLeft: 640
   },
   List: {
-    listStyleType: 'none'
+    listStyleType: 'none',
+    marginLeft: -38
   },
   AppBar: {
     height: 55
@@ -24,6 +25,7 @@ const style = {
   Avatar: {
     display: 'block',
     margin: 'auto',
+    marginTop: 10,
     width: 60,
     height: 60,
     borderRadius: 120,
@@ -31,7 +33,17 @@ const style = {
   },
   Username: {
     fontFamily: 'Cinzel Decorative',
+    fontSize: 22,
+    marginLeft: -10,
+  },
+  Creator: {
+    textAlign: 'center',
+    marginLeft: -10,
+    fontFamily: 'Cinzel Decorative',
     fontSize: 22
+  },
+  Link: {
+    textDecoration: 'none'
   }
 }
 
@@ -40,7 +52,10 @@ class Attendees extends Component {
   constructor () {
     super()
     this.state = {
-      attendees: []
+      attendees: [],
+      creator: "",
+      creatorAvatar: "",
+      creatorUid: ""
     }
   }
 
@@ -49,11 +64,20 @@ class Attendees extends Component {
         context: this,
         asArray: true,
         then: (data) => {
-          console.log('data is', data)
           this.setState({
             attendees: data
           })
         }
+    })
+    base.fetch(`events/${this.props.eventTitle}`, {
+      context: this,
+      then: (data) => {
+        this.setState({
+          creator: data.createdBy,
+          creatorAvatar: data.creatorAvatar,
+          creatorUid: data.creatorUid
+        })
+      }
     })
   }
 
@@ -69,17 +93,24 @@ class Attendees extends Component {
             style={style.AppBar}
             showMenuIconButton={false}
           />
+
             <InfiniteScroll
               height={250}
               endMessage={<Favorite />}
               loader={<h4>Loading...</h4>}>
 
+              <Link style={style.Link} className="link" to={`/profile/${this.state.creatorUid}`} activeClassName="active">
+                <img src={this.state.creatorAvatar} style={style.Avatar} role="presentation" />
+                <p style={style.Creator}>{this.state.creator}, Creator</p>
+              </Link>
+              <hr />
+
               <ul style={style.List}>
       					{this.state.attendees.map((attendee, index) => {
                     return <li key={index}>
                               <div>
-                                  <img src={attendee.avatar} style={style.Avatar} role="presentation" />
                                   <Link style={style.Link} className="link" to={`/profile/${attendee.uid}`} activeClassName="active">
+                                    <img src={attendee.avatar} style={style.Avatar} role="presentation" />
                                     <h1 style={style.Username}>{attendee.username}</h1>
                                   </Link>
                               </div>

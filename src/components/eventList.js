@@ -81,12 +81,13 @@ class EventList extends Component {
 
                 <ul style={style.List}>
                   {this.state.eventList.map((event, index) => {
+                    console.log('event.AmPm is', event.AmPm)
                       return <li key={index}>
                                 <div >
                                   <Link style={style.Link} className="link" to={`/events/${event.title}`} activeClassName="active">
                                     <h3 >{event.title}</h3>
                                     <p style={style.EventInfo}>{event.date}</p>
-                                    <p style={style.EventInfo}style={style.EventInfo}>{event.time} {event.AmPm}</p>
+                                    <p style={style.EventInfo}>{event.time} {event.AmPm}</p>
                                     <p style={style.EventInfo}>{event.location}</p>
                                     <hr style={style.Hr}/>
                                   </Link>
