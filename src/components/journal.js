@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import CloudDownload from 'material-ui/svg-icons/file/cloud-download';
+import Save from 'material-ui/svg-icons/content/save';
 import Close from 'material-ui/svg-icons/navigation/close';
 import JournalArchive from './journalArchive.js';
 
@@ -28,8 +28,8 @@ const style = {
     border: 'none',
     margin: 'auto',
     color: 'white',
-    width: 55,
-    height: 30,
+    width: 40,
+    height: 40,
     borderRadius: 11,
     boxShadow: '1px 1.5px 2px  gray',
     marginLeft: 16,
@@ -54,7 +54,7 @@ class Journal extends Component {
 }
 
 componentWillReceiveProps(props) {
-  if (this.props.uid === null) {
+  if (!this.props.uid) {
   } else {
   if (this.sync) {
     base.removeBinding(this.sync)
@@ -111,7 +111,7 @@ saveEntry () {
               />
 
                 <IconButton iconStyle={style.SaveButton} tooltip="save" tooltipPosition="top-right">
-                  <CloudDownload onClick={this.saveEntry.bind(this)}/>
+                  <Save onClick={this.saveEntry.bind(this)}/>
                 </IconButton>
 
                 <JournalArchive uid={this.props.uid}/>

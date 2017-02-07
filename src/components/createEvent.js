@@ -149,14 +149,12 @@ class CreateEvent extends Component {
  };
 
  handleDateChange = (date) => {
-   console.log('date', date)
   this.setState({
     startDate: date
   })
 }
 
   render() {
-    console.log('this.props.avatar is', this.props.avatar)
     return (
       <div style={style.Events}>
 
@@ -187,18 +185,18 @@ class CreateEvent extends Component {
                        style={style.Time}
                        ref={input => this.time = input}
                      >
-                       <MenuItem value="1" key="1" primaryText="1"  />
-                       <MenuItem value="2" key="2" primaryText="2" />
-                       <MenuItem value="3" key="3" primaryText="3"  />
-                       <MenuItem value="4" key="4" primaryText="4" />
-                       <MenuItem value="5" key="5" primaryText="5"  />
-                       <MenuItem value="6" key="6" primaryText="6" />
-                       <MenuItem value="7" key="7" primaryText="7"  />
-                       <MenuItem value="8" key="8" primaryText="8" />
-                       <MenuItem value="9" key="9" primaryText="9"  />
-                       <MenuItem value="10" key="10" primaryText="10" />
-                       <MenuItem value="11" key="11" primaryText="11"  />
-                       <MenuItem value="12" key="12" primaryText="12" />
+                       <MenuItem value="1" primaryText="1"  />
+                       <MenuItem value="2" primaryText="2" />
+                       <MenuItem value="3" primaryText="3"  />
+                       <MenuItem value="4" primaryText="4" />
+                       <MenuItem value="5" primaryText="5"  />
+                       <MenuItem value="6" primaryText="6" />
+                       <MenuItem value="7" primaryText="7"  />
+                       <MenuItem value="8" primaryText="8" />
+                       <MenuItem value="9" primaryText="9"  />
+                       <MenuItem value="10" primaryText="10" />
+                       <MenuItem value="11" primaryText="11"  />
+                       <MenuItem value="12" primaryText="12" />
                      </SelectField>
 
                       <SelectField
@@ -208,8 +206,8 @@ class CreateEvent extends Component {
                         style={style.AmPm}
                         ref={input => this.AmPm = input}
                       >
-                        <MenuItem value="AM" key="1" primaryText="AM"  />
-                        <MenuItem value="PM" key="2" primaryText="PM" />
+                        <MenuItem value="AM" primaryText="AM"  />
+                        <MenuItem value="PM" primaryText="PM" />
                       </SelectField>
                     </div>
 

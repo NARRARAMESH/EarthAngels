@@ -156,7 +156,7 @@ componentDidMount() {
       data: {uid: this.props.uid, username: this.props.username, avatar: this.props.avatar}
     })
     base.update(`users/${this.props.uid}/events/${this.state.event.title}`, {
-      data: {title: this.state.event.title, date: this.state.event.date, time: this.state.event.time, location: this.state.event.location, isAttending: true}
+      data: {title: this.state.event.title, date: this.state.event.date, time: this.state.event.time, AmPm: this.state.event.AmPm, location: this.state.event.location, isAttending: true}
     })
     this.setState({title: "Attending"})
   }

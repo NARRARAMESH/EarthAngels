@@ -10,9 +10,15 @@ const style = {
     backgroundColor: '#edfbff',
     height: 210,
   },
+  LogoutDiv: {
+    backgroundColor: '#1C3285',
+    height: 210,
+    padding: 20,
+    paddingBottom: 60
+  },
   Input: {
     display: 'block',
-    marginLeft: '4.5%',
+    marginLeft: '3.8%',
     float: 'left',
     width: '90%',
     height: 80,
@@ -58,9 +64,34 @@ const style = {
   },
   PostIcon: {
     color: 'white'
+  },
+  PhotoButton: {
+    display: 'block',
+    backgroundColor: '#36cee2',
+    border: 'none',
+    marginTop: -30,
+    marginLeft: 400,
+    marginBottom: 200,
+    width: 55,
+    height: 30,
+    borderRadius: 11,
+    boxShadow: '1px 1.5px 2px  gray'
+  },
+  Wings: {
+    height: 200,
+    width: 280,
+  },
+  Tagline: {
+    color: 'white',
+    textAlign: 'center',
+    marginLeft: 0,
+    marginTop: 10,
+    fontFamily: 'Cinzel Decorative',
+    paddingBottom: 20
+  },
+  Uploader: {
+    marginTop: -300
   }
-  // PhotoButton: {
-  // }
 };
 
 class ShareBox extends Component {
@@ -69,7 +100,12 @@ class ShareBox extends Component {
     this.state = {
       text: "",
       photoAdded: false,
-      button: false
+      button: false,
+      username: '',
+      avatar: '',
+      isUploading: false,
+      progress: 0,
+      avatarURL: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.togglePhoto = this.togglePhoto.bind(this)
@@ -138,15 +174,14 @@ post () {
   renderInput () {
     if (this.props.uid === "") {
       return (
-        <div>
-          <p>Earth Angels is a social app for daily acts of kindness.</p>
-          <p>We are guardians of goodness in the world. Protectors of peace.</p>
-          <p>👐 Join us. Rise up. 👐</p>
+        <div style={style.LogoutDiv}>
+          <img style={style.Wings} src={require('../images/ea.png')} role="presentation" />
+          <p style={style.Tagline}>A social network for acts of kindness</p>
         </div>
       )
     } else {
       return (
-          <div>
+            <div style={style.Div}>
              {this.overflowAlert()}
              <textarea
              style={style.Input}
@@ -154,10 +189,11 @@ post () {
              ref={textArea => this.textArea = textArea}
              placeholder="👐  Share about Your Kindess . . . 👐"
              />
-
              <span style={style.Characters}>{this.remainingCharacters()}</span>
-
              {this.renderButton()}
+
+
+
            </div>
       )
     }
@@ -167,14 +203,10 @@ post () {
     render() {
         return (
           <div>
-            <div style={style.Div}>
               {this.renderInput()}
-            </div>
           </div>
         )
     }
 }
 
 export default ShareBox;
-
-// <IconButton iconStyle={style.PhotoButton} tooltip="add photo" tooltipPosition="top-center"><PhotoCamera /></IconButton>

@@ -7,6 +7,7 @@ import Events from './components/events.js';
 import EventFull from './components/eventFull.js';
 import Profile from './components/profile.js';
 import Chat from './components/chat.js';
+import ChatDashboard from './components/chatDashboard.js';
 import './index.css';
 
 
@@ -18,8 +19,9 @@ ReactDOM.render(
       <Route path="events" component={Events} />
       <Route path="events/:eventFull" component={EventFull} />
       <Route path="profile/:uid" component={Profile} />
-      <Route path="chats" component={Chat} />
-      <Route path="chats/:user1/:user2" component={Chat} />
+      <Route path="/chats" component={ChatDashboard}>
+        <Route path="/chats/:user1/:user2" component={Chat} />
+      </Route>
     </Route>
   </Router>,
   document.getElementById('root')

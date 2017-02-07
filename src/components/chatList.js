@@ -11,11 +11,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const style = {
   Paper: {
+    marginTop: -110,
     width: 300,
-    height: '100%'
+    height: 1002,
+    float: 'right'
   },
   List: {
-    listStyleType: 'none'
+    listStyleType: 'none',
+    marginLeft: -30
   },
   Avatar: {
     display: 'block',
@@ -28,6 +31,9 @@ const style = {
   Username: {
     fontFamily: 'Cinzel Decorative',
     fontSize: 22
+  },
+  Link: {
+    textDecoration: 'none'
   }
 }
 
@@ -47,23 +53,19 @@ class ChatList extends Component {
         asArray: true,
         then: (data) => {
           this.setState({ uids: data })
-
-          // console.log('data is', data)
-          data.forEach((uid) => {
-            // console.log('uid is', uid)
-            base.fetch(`users/${uid}`, {
+          var newArray = data.map((uid) => {
+            return base.fetch(`users/${uid}`, {
               context: this,
             })
           })
-            // this.setState({ users: newArray })
-          }
+          Promise.all(newArray).then( values => {
+            this.setState({ users: values })
+          })
+        }
       })
   }
 
 
-
-
-// Promise.all()
 
   chatRoute(chatUid) {
     var uids = [`${this.props.uid}`, `${chatUid}`]
@@ -73,10 +75,7 @@ class ChatList extends Component {
 
 
 
-
   render() {
-    console.log('uids is', this.state.uids)
-    console.log('users is', this.state.users)
     return (
       <div style={style.Component}>
       <MuiThemeProvider>
@@ -92,7 +91,7 @@ class ChatList extends Component {
                     return <li key={index}>
                               <div>
                                   <img src={user.avatar} style={style.Avatar} role="presentation" />
-                                  <Link style={style.Link} className="link" to={this.chatRoute()} activeClassName="active">
+                                  <Link style={style.Link} className="link" to={this.chatRoute(user.uID)} activeClassName="active">
                                     <h1 style={style.Username}>{user.username}</h1>
                                   </Link>
                               </div>

@@ -35,7 +35,7 @@ const style = {
     color: 'white',
     fontSize: 44,
     fontFamily: 'Cinzel Decorative',
-    marginTop: -70,
+    marginTop: -105,
     fontWeight: 'bolder'
   },
   Avatar: {
@@ -51,8 +51,8 @@ const style = {
     paddingTop: 120,
     textAlign: 'center',
     fontSize: 44,
-    marginTop: 0,
-    marginLeft: 0,
+    marginTop: 5,
+    marginLeft: 5,
     color: '#5DBCD2'
   },
   AOK: {
@@ -72,8 +72,8 @@ const style = {
     color: 'white',
     width: 55,
     height: 55,
-    marginTop: 20,
-    marginRight: -780
+    marginBottom: 20,
+    marginRight: -1120
   },
   Time: {
     color: '#ccc',
@@ -87,15 +87,20 @@ const style = {
     marginBottom: -22,
     fontSize: 20
   },
-  Wings: {
+  LeftWings: {
     height: 100,
-    width: 100,
-    float: 'left',
-    marginLeft: 30,
-    marginTop: 20
-
+    width: 140,
+    marginLeft: -1001,
+    marginTop: 15,
+    paddingRight: 500
+  },
+  RightWings: {
+    height: 100,
+    width: 140,
+    marginRight: -1000,
+    marginTop: 15
   }
-};
+}
 
 
 class Profile extends Component {
@@ -169,19 +174,30 @@ class Profile extends Component {
     return interval + ' ' + intervalType + ' ago';
   }
 
-  // renderChatIcon () {
-  //   if (this.props.params.uid !== this.props.uid ) {
-  //     return <IconButton iconStyle={style.ChatIcon}>
-  //             <Chat />
-  //           </IconButton>
-  //   }
-  // }
+
+  renderChatIcon () {
+    if (this.props.params.uid === this.props.uid ) {
+      return  (
+        <img style={style.RightWings} src={require('../images/ea.png')} role="presentation" />
+      )
+    } else {
+      return (
+        <Link style={style.Link} className="link" to={this.chatRoute()} activeClassName="active">
+          <IconButton iconStyle={style.ChatIcon}>
+            <Chat />
+          </IconButton>
+        </Link>
+      )
+    }
+  }
+
 
   chatRoute () {
     var uids = [`${this.props.uid}`, `${this.state.uid}`]
     var uidsAlph = uids.sort()
     return `/chats/${uidsAlph[0]}/${uidsAlph[1]}`
   }
+
 
   render() {
     var AOKsCopy = this.state.AOKs.slice(0)
@@ -193,11 +209,9 @@ class Profile extends Component {
             <Paper style={style.Paper}>
             <div style={style.Header}>
 
-            <Link style={style.Link} className="link" to={this.chatRoute()} activeClassName="active">
-              <IconButton iconStyle={style.ChatIcon}>
-                <Chat />
-              </IconButton>
-            </Link>
+            <img style={style.LeftWings} src={require('../images/ea.png')} role="presentation" />
+
+            {this.renderChatIcon()}
 
               <h5 style={style.UserName}>{this.state.username}</h5>
               <img src={this.state.avatar} style={style.Avatar} role="presentation" className="sidebarAvatar" />
@@ -237,5 +251,3 @@ class Profile extends Component {
 }
 
 export default Profile;
-
-// <img style={style.Wings} src={require('../images/goldAngel.png')} />

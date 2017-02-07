@@ -101,7 +101,7 @@ class Attendees extends Component {
 
               <Link style={style.Link} className="link" to={`/profile/${this.state.creatorUid}`} activeClassName="active">
                 <img src={this.state.creatorAvatar} style={style.Avatar} role="presentation" />
-                <p style={style.Creator}>{this.state.creator}, Creator</p>
+                <p style={style.Creator}>{this.state.creator}, Organizer</p>
               </Link>
               <hr />
 

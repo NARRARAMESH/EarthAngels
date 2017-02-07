@@ -57,7 +57,7 @@ const style = {
     marginRight: 15,
     width: 20,
     height: 20,
-    marginLeft: -20
+    marginLeft: 10
   },
   icon2: {
     color: 'white',
@@ -135,7 +135,8 @@ class Sidebar extends Component {
       completeTodos: [],
       notifications: [],
       open: false,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
+      alert: "No new notifications"
     }
   }
 
@@ -234,6 +235,14 @@ renderNotificationAmount () {
   }
 }
 
+notificationText (notification){
+if (this.state.notifications.length === 0) {
+  return this.state.alert
+}
+  return notification
+}
+
+
 
 
   render() {
@@ -258,7 +267,7 @@ renderNotificationAmount () {
                 <Link to="/feedofKindness" activeClassName="active">
                   <button className="sidebarButton" >
                     <FilterDrama style={style.icon}/>
-                  Live Feed
+                  Kindness Feed
                   </button>
                 </Link>
               </MuiThemeProvider>
@@ -299,7 +308,7 @@ renderNotificationAmount () {
                 />
               </IconButton>
 
-              <Link style={style.Link} className="link" to={`/chats`} activeClassName="active">
+              <Link style={style.Link} className="link" to={'/chats'} activeClassName="active">
                 <IconButton iconStyle={style.ChatIcon}>
                   <Chat />
                 </IconButton>
@@ -325,7 +334,7 @@ renderNotificationAmount () {
                   return (
                     <li key={index}>
                       <p style={style.NotificationAlert}>{notification.username} loved your post:</p>
-                      <p style={style.NotificationText}>"{notification.text}"</p>
+                      <p style={style.NotificationText}>{this.notificationText(notification.text)}</p>
                       <p style={style.NotificationTime}>{this.timeSince(notification.time)}</p>
                       <hr/>
                     </li>

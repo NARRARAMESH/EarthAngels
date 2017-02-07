@@ -57,6 +57,7 @@
     "react-datepicker": "^0.40.0",
     "react-day-picker": "^3.1.1",
     "react-dom": "^15.4.2",
+    "react-firebase-image-uploader": "^1.1.0",
     "react-gmaps": "^1.5.0",
     "react-infinite-calendar": "^1.2.2",
     "react-infinite-scroll-component": "^2.0.1",

@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
-// import { Link } from 'react-router'
 import Paper from 'material-ui/Paper';
 import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import ChatList from './chatList.js'
 import Delete from 'material-ui/svg-icons/action/delete';
 
 
 const style = {
   Component: {
-    height: 930,
     display: 'flex',
     justifyContent: 'center'
   },
@@ -89,8 +86,8 @@ class Chat extends Component {
     }
   }
 
-  componentDidMount() {
-    base.fetch(`chats/${this.props.params.user1}/${this.props.params.user2}`, {
+  componentWillReceiveProps(props) {
+    base.listenTo(`chats/${this.props.params.user1}/${this.props.params.user2}`, {
       context: this,
       then(data){
         if (data === null) {
@@ -227,8 +224,6 @@ deleteMessage(clickedMessage) {
           </Paper>
           </MuiThemeProvider>
 
-          <ChatList uid={this.props.uid}/>
-
       </div>
     )
   }
@@ -236,7 +231,3 @@ deleteMessage(clickedMessage) {
 
 
 export default Chat;
-
-// <IconButton  iconStyle={style.Delete}>
-//   <Delete  onClick={this.deleteComment.bind(this, comment)}/>
-// </IconButton>

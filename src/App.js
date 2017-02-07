@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import base from './config.js';
-// import { hashHistory } from 'react-router';
+import { withRouter } from 'react-router';
 import './App.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -10,6 +10,10 @@ import ToDo from './components/todo.js';
 import Journal from './components/journal.js';
 import Login from './components/login.js';
 import Sidebar from './components/sidebar.js';
+import Menu from 'material-ui/svg-icons/navigation/menu';
+import IconButton from 'material-ui/IconButton';
+
+
 
 injectTapEventPlugin()
 
@@ -22,8 +26,6 @@ const style = {
     color: 'white',
     marginTop: '10px',
     fontFamily: 'Josefin Sans',
-    backgroundColor: '#adadf4',
-    boxShadow: '1px 1.5px 2px  gray'
   },
   LogoutButton: {
     color: 'white',
@@ -58,13 +60,9 @@ class App extends Component {
 
   logOut(){
     base.unauth()
+    this.setState({uid: ""})
+    this.props.router.push('/feedofKindness')
   }
-
-//   requireAuth() {
-//   if (this.state.user = "") {
-//     hashHistory.push('/')
-//   }
-// }
 
 
   authStateChanged (user) {
@@ -81,9 +79,15 @@ class App extends Component {
            base.post(`users/${user.uid}`, {
              data: {uID: user.uid},
            })
+           base.post(`usernames/${user.displayName}`, {
+             data: {uid: user.uid, username: user.displayName},
+           })
          } else {
            base.update(`users/${user.uid}`, {
              data: {uID: user.uid, username: user.displayName, avatar: user.photoURL},
+           })
+           base.update(`usernames/${user.displayName}`, {
+             data: {uid: user.uid, username: user.displayName},
            })
          }
        }
@@ -137,6 +141,20 @@ class App extends Component {
     }
   }
 
+  // toggleDashboard() {
+  //   console.log("hey adam")
+  //       return (
+  //       <Sidebar toDo={this.state.toDo} toggleToDo={this.toggleToDo}
+  //                journal={this.state.journal} toggleJournal={this.toggleJournal}
+  //                avatar={this.state.avatar}
+  //                username={this.state.username}
+  //                uid={this.state.uid}
+  //       />
+  //     )
+  // }
+
+
+
 
   render() {
     var childrenWithProps = React.cloneElement(this.props.children, {
@@ -149,17 +167,15 @@ class App extends Component {
             <AppBar
               style={style.AppBar}
               title="Earth Angels"
-              showMenuIconButton={false}
+              showMenuIconButton={true}
             >
             {this.renderButton()}
-
             </AppBar>
         </MuiThemeProvider>
 
         {this.renderSidebar()}
 
         <Login logInOpen={this.state.logInOpen} logInClose={this.logInClose} userLogIn={this.logIn.bind(this)} userLogOut={this.logOut.bind(this)} />
-
 
         <ToDo toDo={this.state.toDo} toggleToDo={this.toggleToDo} uid={this.state.uid} username={this.state.username} avatar={this.state.avatar}/>
         <Journal journal={this.state.journal} toggleJournal={this.toggleJournal} uid={this.state.uid}/>

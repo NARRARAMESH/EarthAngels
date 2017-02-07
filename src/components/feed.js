@@ -18,7 +18,7 @@ const style = {
   Paper: {
     height: 1000,
     width: 600,
-    marginLeft: 250,
+    // marginLeft: 250,
     textAlign: 'center',
     display: 'inline-block',
     zDepth: 1
@@ -78,7 +78,8 @@ const style = {
     width: 18,
     height: 18,
     marginLeft: -600,
-    marginBottom: 0
+    marginBottom: 0,
+    letterSpacing: 50
   }
 };
 
