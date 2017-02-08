@@ -14,13 +14,13 @@ import Menu from 'material-ui/svg-icons/navigation/menu';
 import IconButton from 'material-ui/IconButton';
 
 
-
 injectTapEventPlugin()
 
 const style = {
   AppBar: {
     fontFamily: "Cinzel Decorative",
-    fontWeight: 'bolder'
+    fontWeight: 'bolder',
+    zIndex: 1501
   },
   LoginButton: {
     color: 'white',
@@ -45,7 +45,9 @@ class App extends Component {
     avatar: "",
     logInOpen: false,
     toDo: false,
-    journal: false
+    journal: false,
+    sidebar: true,
+    menuButton: true
   })
 }
 
@@ -60,7 +62,7 @@ class App extends Component {
 
   logOut(){
     base.unauth()
-    this.setState({uid: ""})
+    this.setState({uid: "", sidebar: false, menuButton: false})
     this.props.router.push('/feedofKindness')
   }
 
@@ -92,12 +94,12 @@ class App extends Component {
          }
        }
      })
+     this.setState({sidebar: true, menuButton: true})
    } else {
-     this.setState({
-     user: {}
-   })
+     this.setState({user: {} })
    }
   }
+
 
   componentWillUnmount () {
     base.removeBinding(this.sync)
@@ -128,32 +130,24 @@ class App extends Component {
   }
 
   renderSidebar() {
-    if (this.state.uid === "") {
-    } else {
+    if (this.state.sidebar === true) {
       return (
-      <Sidebar toDo={this.state.toDo} toggleToDo={this.toggleToDo}
-               journal={this.state.journal} toggleJournal={this.toggleJournal}
-               avatar={this.state.avatar}
-               username={this.state.username}
-               uid={this.state.uid}
-      />
+        <Sidebar toDo={this.state.toDo} toggleToDo={this.toggleToDo}
+                 journal={this.state.journal} toggleJournal={this.toggleJournal}
+                 avatar={this.state.avatar}
+                 username={this.state.username}
+                 uid={this.state.uid}
+        />
       )
     }
   }
 
-  // toggleDashboard() {
-  //   console.log("hey adam")
-  //       return (
-  //       <Sidebar toDo={this.state.toDo} toggleToDo={this.toggleToDo}
-  //                journal={this.state.journal} toggleJournal={this.toggleJournal}
-  //                avatar={this.state.avatar}
-  //                username={this.state.username}
-  //                uid={this.state.uid}
-  //       />
-  //     )
-  // }
+  toggleDashboard () {
+    this.setState({
+      sidebar: !this.state.sidebar
+    })
 
-
+  }
 
 
   render() {
@@ -167,13 +161,16 @@ class App extends Component {
             <AppBar
               style={style.AppBar}
               title="Earth Angels"
-              showMenuIconButton={true}
+              showMenuIconButton={this.state.menuButton}
+              onLeftIconButtonTouchTap={this.toggleDashboard.bind(this)}
             >
+
             {this.renderButton()}
             </AppBar>
         </MuiThemeProvider>
 
         {this.renderSidebar()}
+
 
         <Login logInOpen={this.state.logInOpen} logInClose={this.logInClose} userLogIn={this.logIn.bind(this)} userLogOut={this.logOut.bind(this)} />
 

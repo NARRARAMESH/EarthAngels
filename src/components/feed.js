@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
 import base from '../config.js'
 import { Link } from 'react-router'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -18,7 +19,6 @@ const style = {
   Paper: {
     height: 1000,
     width: 600,
-    // marginLeft: 250,
     textAlign: 'center',
     display: 'inline-block',
     zDepth: 1
@@ -80,6 +80,9 @@ const style = {
     marginLeft: -600,
     marginBottom: 0,
     letterSpacing: 50
+  },
+  Scroll: {
+    overflowX: 'hidden'
   }
 };
 
@@ -131,9 +134,9 @@ likePost (likedPost) {
     if (likeCount === 0) {
       return null
     } else if (likeCount === 1) {
-      return <span style={style.Love}>{likeCount} love</span>
+      return <span style={style.Love} className="likeCount">{likeCount} love</span>
     } else {
-      return <span style={style.Love}>{likeCount} loves</span>
+      return <span style={style.Love} className="likeCount">{likeCount} loves</span>
     }
   }
 
@@ -141,7 +144,7 @@ likePost (likedPost) {
     if (post.uid === this.props.uid)
       return (
         <IconButton iconStyle={style.Delete}>
-          <Delete  onClick={this.deletePost.bind(this, post)}/>
+          <Delete  className="deleteButton" onClick={this.deletePost.bind(this, post)}/>
         </IconButton>
       )
   }
@@ -200,44 +203,46 @@ likePost (likedPost) {
     return (
       <div style={style.Feed}>
         <MuiThemeProvider>
-            <Paper style={style.Paper}>
-            <ShareBox uid={this.props.uid} username={this.props.username} avatar={this.props.avatar} newArray={this.newArray.bind(this)} />
+            <Paper style={style.Paper} className="feed">
+              <ShareBox uid={this.props.uid} username={this.props.username} avatar={this.props.avatar} newArray={this.newArray.bind(this)} />
 
-            <InfiniteScroll
-              height={750}
-              endMessage={<Favorite/>}
-              loader={<h4>Loading...</h4>}>
+              <InfiniteScroll
+                style={style.Scroll}
+                height={750}
+                endMessage={<Favorite/>}
+                loader={<h4>Loading...</h4>}>
 
-            <ul style={style.FeedUL}>
-              {feedReverse.map((post, index) => {
-                  return <li key={index}>
-                              <div>
-                                <p style={style.Time}>{this.timeSince(post.elapsedTime)}</p>
+              <ul style={style.FeedUL}>
+                {feedReverse.map((post, index) => {
+                    return <li key={index}>
+                                <div>
+                                  <p style={style.Time}>{this.timeSince(post.elapsedTime)}</p>
 
-                                <Link style={style.Link} className="link" to={`/profile/${post.uid}`} activeClassName="active">
-                                  <img src={post.avatar} style={style.Avatar} role="presentation" />
-                                  <p style={style.Username}><strong>{post.username}</strong></p>
-                                </Link>
+                                  <Link style={style.Link} className="link" to={`/profile/${post.uid}`} activeClassName="active">
+                                    <img src={post.avatar} style={style.Avatar} role="presentation" />
+                                    <p style={style.Username}><strong>{post.username}</strong></p>
+                                  </Link>
 
-                                <p style={style.PostText}>{post.text}</p>
+                                  <p style={style.PostText}>{post.text}</p>
 
-                                {this.renderDeleteButton(post)}
+                                  {this.renderDeleteButton(post)}
 
-                                <Checkbox
-                                  checkedIcon={<ActionFavorite />}
-                                  uncheckedIcon={<ActionFavoriteBorder />}
-                                  onCheck={this.likePost.bind(this, post)}
-                                  style={style.Heart}
-                                />
-                                {this.renderLikeCount(post.likeCount)}
-                                <hr />
+                                  <Checkbox
+                                    checkedIcon={<ActionFavorite />}
+                                    uncheckedIcon={<ActionFavoriteBorder />}
+                                    onCheck={this.likePost.bind(this, post)}
+                                    style={style.Heart}
+                                    className="love"
+                                  />
+                                  {this.renderLikeCount(post.likeCount)}
+                                  <hr />
 
-                              </div>
-                         </li>
-                })
-              }
-              </ul>
-              </InfiniteScroll>
+                                </div>
+                           </li>
+                  })
+                }
+                </ul>
+                </InfiniteScroll>
 
             </Paper>
         </MuiThemeProvider>

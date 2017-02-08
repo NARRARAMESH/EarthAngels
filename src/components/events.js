@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
+import './responsive.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -21,19 +22,13 @@ const style = {
     display: 'flex',
     alignContent: 'space-between'
   },
-  Attending: {
-    height: 360,
-    width: 300,
-    marginTop: 60,
-    marginLeft: 80
-  },
   Paper: {
     height: 800,
     width: 600,
     marginLeft: 350,
     marginTop: 60,
     textAlign: 'center',
-    display: 'inline-block',
+    display: 'block',
     fontFamily: 'Cinzel Decorative'
   },
   AppBar: {
@@ -60,9 +55,10 @@ const style = {
     textDecoration: 'none'
   },
   Title: {
+    display: 'block',
+    margin: 'auto',
     backgroundColor: '#1C3285',
     width: 400,
-    marginLeft: 50,
     color: 'white',
     opacity: .95,
     borderRadius: 5,
@@ -78,10 +74,6 @@ const style = {
   Hr: {
     color: '#ccc'
   }
-  // EventDashboard: {
-  //   display: 'flex',
-  //   flexDirection: 'column'
-  // },
 };
 
 
@@ -154,51 +146,50 @@ class Events extends Component {
 
   render() {
     return (
-      <div style={style.Events}>
+      <div style={style.Events} className="container">
+        <MuiThemeProvider>
+            <Paper style={style.Paper} className="events" zDepth={2}>
+                <AppBar
+                  style={style.AppBar}
+                  title="Angel Events near you"
+                  iconElementLeft={<IconButton><Search onClick={this.toggleDistance}/></IconButton>}
+                >
+                <IconButton tooltip="Create Event"
+                    iconStyle={style.CreateEvent}
+                    onClick={this.toggleDialog.bind(this)}>
+                    <ContentAdd />
+                </IconButton>
+                </AppBar>
 
-      <MuiThemeProvider>
-          <Paper style={style.Paper} zDepth={2}>
-              <AppBar
-                style={style.AppBar}
-                title="Angel Events near you"
-                iconElementLeft={<IconButton><Search onClick={this.toggleDistance}/></IconButton>}
-              >
-              <IconButton tooltip="Create Event"
-                  iconStyle={style.CreateEvent}
-                  onClick={this.toggleDialog.bind(this)}>
-                  <ContentAdd />
-              </IconButton>
-              </AppBar>
+                <InfiniteScroll
+                  height={700}
+                  endMessage={<Favorite/>}
+                  loader={<h4>Loading...</h4>}>
 
-              <InfiniteScroll
-                height={700}
-                endMessage={<Favorite/>}
-                loader={<h4>Loading...</h4>}>
+                  <ul style={style.List}>
+                    {this.state.events.map((event, index) => {
+                        return <li key={index}>
+                                  <div >
+                                  <Link style={style.Link} className="link" to={`/events/${event.title}`} activeClassName="active">
+                                    <h2 style={style.Title} className="title" >{event.title}</h2>
+                                    <p style={style.EventInfo}>{event.date}</p>
+                                    <p style={style.EventInfo}>{event.time} {event.AmPm}</p>
+                                    <p style={style.EventInfo}>{event.location}</p>
+                                    <hr style={style.Hr} />
+                                  </Link>
+                                  </div>
+                               </li>
+                    })
+                    }
+                    </ul>
+                    {this.showSpinner()}
+                  </InfiniteScroll>
 
-                <ul style={style.List}>
-                  {this.state.events.map((event, index) => {
-                      return <li key={index}>
-                                <div >
-                                <Link style={style.Link} className="link" to={`/events/${event.title}`} activeClassName="active">
-                                  <h2 style={style.Title}>{event.title}</h2>
-                                  <p style={style.EventInfo}>{event.date}</p>
-                                  <p style={style.EventInfo}>{event.time} {event.AmPm}</p>
-                                  <p style={style.EventInfo}>{event.location}</p>
-                                  <hr style={style.Hr} />
-                                </Link>
-                                </div>
-                             </li>
-                  })
-                  }
-                  </ul>
-                  {this.showSpinner()}
-                </InfiniteScroll>
+            </Paper>
+        </MuiThemeProvider>
 
-          </Paper>
-      </MuiThemeProvider>
-
-      <CreateEvent uid={this.props.uid} dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username} avatar={this.props.avatar}/>
-      <EventList uid={this.props.uid} events={this.state.events} />
+        <EventList uid={this.props.uid} events={this.state.events} />
+        <CreateEvent uid={this.props.uid} dialog={this.state.dialog} toggleDialog={this.toggleDialog} username={this.props.username} avatar={this.props.avatar}/>
 
       </div>
     );

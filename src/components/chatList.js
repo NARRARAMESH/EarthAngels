@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
 import base from '../config.js'
 import { Link } from 'react-router'
 import Paper from 'material-ui/Paper';
@@ -11,9 +12,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const style = {
   Paper: {
-    marginTop: -110,
+    marginTop: -730,
     width: 300,
-    height: 1002,
+    height: 1025,
     float: 'right'
   },
   List: {
@@ -34,6 +35,14 @@ const style = {
   },
   Link: {
     textDecoration: 'none'
+  },
+  Div: {
+    marginTop: 0,
+    paddingTop: 20,
+    height: 50,
+    backgroundColor:'#1C3285',
+    color: 'white',
+    fontFamily: 'Cinzel Decorative'
   }
 }
 
@@ -66,7 +75,6 @@ class ChatList extends Component {
   }
 
 
-
   chatRoute(chatUid) {
     var uids = [`${this.props.uid}`, `${chatUid}`]
     var uidsAlph = uids.sort()
@@ -79,10 +87,12 @@ class ChatList extends Component {
     return (
       <div style={style.Component}>
       <MuiThemeProvider>
-        <Paper style={style.Paper}>
+        <Paper style={style.Paper} className="chatList">
+        <div style={style.Div} className="chatListHeader">My Chats</div>
+
 
             <InfiniteScroll
-              height={400}
+              height={300}
               endMessage={<Favorite />}
               loader={<h4>Loading...</h4>}>
 
@@ -90,8 +100,8 @@ class ChatList extends Component {
       					{this.state.users.map((user, index) => {
                     return <li key={index}>
                               <div>
-                                  <img src={user.avatar} style={style.Avatar} role="presentation" />
                                   <Link style={style.Link} className="link" to={this.chatRoute(user.uID)} activeClassName="active">
+                                    <img src={user.avatar} style={style.Avatar} role="presentation" />
                                     <h1 style={style.Username}>{user.username}</h1>
                                   </Link>
                               </div>

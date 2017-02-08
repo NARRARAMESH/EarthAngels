@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import base from '../config.js'
 import '../App.css';
+import './responsive.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import Card from 'material-ui/Card';
@@ -172,8 +173,9 @@ componentDidMount() {
   renderMap () {
     if (this.state.event.lat !== "" && this.state.event.lat !== "") {
       return (
-               <div style={style.MapDiv}>
+               <div style={style.MapDiv} className="MapDiv">
                  <Gmaps
+                    className="MapBox"
                     style={style.MapBox}
                     lat={this.state.event.lat}
                     lng={this.state.event.lng}
@@ -197,6 +199,7 @@ componentDidMount() {
       return <button
               onClick={this.attendEvent.bind(this)}
               style={style.Button}
+              className="attendButton"
               >
                 <CloudDone style={style.CloudDone}/>
               </button>
@@ -216,10 +219,10 @@ componentDidMount() {
 
   render() {
     return (
-      <div style={style.Events}>
+      <div style={style.Events} className="container">
 
       <MuiThemeProvider>
-          <Paper style={style.Paper} zDepth={2}>
+          <Paper style={style.Paper} zDepth={2} className="eventFull">
           <AppBar
             title={this.renderTitle()}
             titleStyle={style.AppBarTitle}
@@ -227,7 +230,6 @@ componentDidMount() {
             iconElementRight={this.renderButton()}
           />
           <Card style={style.Card}>
-
           <ul style={style.List}>
             <li>
                 <div style={style.Div}>

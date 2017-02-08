@@ -11,6 +11,10 @@ import JournalArchive from './journalArchive.js';
 
 
 const style = {
+  journal: {
+    width: 950,
+    zIndex: 1800
+  },
   AppBar: {
     fontFamily: "Cinzel Decorative",
     fontWeight: 'bolder',
@@ -18,8 +22,8 @@ const style = {
   },
   Text: {
     marginTop: 40,
-    width: 600,
-    height: 500,
+    width: 550,
+    height: 600,
     fontSize: 24
   },
   SaveButton: {
@@ -40,9 +44,13 @@ const style = {
     width: 30,
     height: 30,
     borderRadius: 120,
+  },
+  Journal: {
+    zIndex: 1550,
+    width: 950
   }
-};
 
+};
 
 
 class Journal extends Component {
@@ -86,12 +94,14 @@ saveEntry () {
 
   render() {
     return (
-      <div className="journal">
+      <div>
 
         <MuiThemeProvider>
             <Drawer
-                docked={true}
                 width={950}
+                containerClassName="journal"
+                containerStyle={style.Journal}
+                docked={true}
                 open={this.props.journal}
                 openSecondary={true}
                 onRequestChange={(right) => this.setState({right})}
@@ -106,7 +116,8 @@ saveEntry () {
                 <Close onClick={this.props.toggleJournal}/>
               </IconButton>
             </AppBar>
-              <textarea style={style.Text}
+
+              <textarea style={style.Text} className="journalTextArea"
                 ref={textArea => this.textArea = textArea}
               />
 
@@ -114,7 +125,7 @@ saveEntry () {
                   <Save onClick={this.saveEntry.bind(this)}/>
                 </IconButton>
 
-                <JournalArchive uid={this.props.uid}/>
+                <JournalArchive uid={this.props.uid} toggleJournal={this.props.toggleJournal}/>
             </Drawer>
         </MuiThemeProvider>
       </div>

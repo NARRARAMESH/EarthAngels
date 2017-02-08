@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
+import { Link } from 'react-router'
 import base from '../config.js'
 import Paper from 'material-ui/Paper';
 import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
@@ -74,6 +76,9 @@ const style = {
     height: 18,
     marginLeft: -500,
     marginBottom: -40
+  },
+  Link: {
+    textDecoration: 'none'
   }
 }
 
@@ -107,9 +112,11 @@ class Chat extends Component {
     } else {
       var userData = `${this.props.params.user1}`
     }
-    base.update(`users/${this.props.uid}/chats`, {
-      data: {[userData]: userData}
-    })
+    if (this.props.uid) {
+      base.update(`users/${this.props.uid}/chats`, {
+        data: {[userData]: userData}
+      })
+    }
   }
 
 
@@ -130,7 +137,7 @@ renderDeleteButton (message) {
   if (message.uid === this.props.uid)
     return (
       <IconButton iconStyle={style.Delete}>
-        <Delete  onClick={this.deleteMessage.bind(this, message)}/>
+        <Delete  className="deleteButton" onClick={this.deleteMessage.bind(this, message)}/>
       </IconButton>
     )
 }
@@ -184,10 +191,11 @@ deleteMessage(clickedMessage) {
 
 
   render() {
+    console.log('this.state.messages', this.state.messages)
     return (
       <div style={style.Component}>
         <MuiThemeProvider>
-          <Paper style={style.Chat}>
+          <Paper style={style.Chat} className="chat">
             <div style={style.Header} />
               <InfiniteScroll
                 height={450}
@@ -199,8 +207,10 @@ deleteMessage(clickedMessage) {
                       return <li key={index}>
                                 <div>
                                     <p style={style.Time}>{this.timeSince(message.timeStamp)}</p>
-                                    <img src={message.avatar} style={style.Avatar} role="presentation" />
-                                    <p style={style.Username}>{message.username}</p>
+                                    <Link style={style.Link} className="link" to={`/profile/${message.uid}`} activeClassName="active">
+                                      <img src={message.avatar} style={style.Avatar} role="presentation" />
+                                      <p style={style.Username}>{message.username}</p>
+                                    </Link>
                                     <p style={style.CommentText}>{message.text}</p>
                                     {this.renderDeleteButton(message)}
                                 </div>

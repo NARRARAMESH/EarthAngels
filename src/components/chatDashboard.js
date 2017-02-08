@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
 import { hashHistory } from 'react-router'
 import base from '../config.js';
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import AutoComplete from 'material-ui/AutoComplete';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ChatList from './chatList.js'
-// import IconButton from 'material-ui/IconButton';
 
 
 const style = {
   Component: {
-    height: 1000,
+    height: 1000
   },
   Paper: {
     backgroundColor: 'white'
@@ -29,9 +29,6 @@ const style = {
     marginTop: 40,
     width: 300,
     paddingBottom: 15,
-  },
-  ChatList: {
-    marginLeft: 500
   },
   ChatButton: {
     color: '#5DBCD2',
@@ -83,7 +80,7 @@ class ChatDashboard extends Component {
       uid: this.props.uid, username: this.props.username, avatar: this.props.avatar})
 
     return (
-      <div style={style.Component}>
+      <div style={style.Component} className="chatDashboard">
             <div style={style.InputDiv}>
               <MuiThemeProvider>
                 <AutoComplete
@@ -99,9 +96,8 @@ class ChatDashboard extends Component {
                 <ChatBubble style={style.ChatButton} />
               </MuiThemeProvider>
             </div>
-            <ChatList style={style.ChatList} uid={this.props.uid}/>
-
             {childrenWithProps}
+            <ChatList uid={this.props.uid}/>
 
       </div>
     )

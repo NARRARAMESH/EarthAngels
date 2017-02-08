@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import base from '../config.js'
 import '../App.css';
+import './responsive.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
@@ -178,13 +179,13 @@ class Profile extends Component {
   renderChatIcon () {
     if (this.props.params.uid === this.props.uid ) {
       return  (
-        <img style={style.RightWings} src={require('../images/ea.png')} role="presentation" />
+        <img style={style.RightWings} className="RightWings" src={require('../images/ea.png')} role="presentation" />
       )
     } else {
       return (
         <Link style={style.Link} className="link" to={this.chatRoute()} activeClassName="active">
           <IconButton iconStyle={style.ChatIcon}>
-            <Chat />
+            <Chat className="ChatButton" />
           </IconButton>
         </Link>
       )
@@ -203,13 +204,13 @@ class Profile extends Component {
     var AOKsCopy = this.state.AOKs.slice(0)
     var AOKsReverse = AOKsCopy.reverse()
     return (
-      <div style={style.Component} className="dashboardButtons">
+      <div style={style.Component}>
 
         <MuiThemeProvider>
-            <Paper style={style.Paper}>
-            <div style={style.Header}>
+            <Paper style={style.Paper} className="profile">
+            <div style={style.Header} className="header">
 
-            <img style={style.LeftWings} src={require('../images/ea.png')} role="presentation" />
+            <img style={style.LeftWings} className="LeftWings" src={require('../images/ea.png')} role="presentation" />
 
             {this.renderChatIcon()}
 
@@ -230,8 +231,8 @@ class Profile extends Component {
                   if (AOK.complete === true && AOK.public === true) {
                   return (
                     <li key={index}>
-                      <p style={style.AOKText}>{AOK.text}</p>
-                      <p style={style.Time}>{this.timeSince(AOK.elapsedTime)}</p>
+                      <p style={style.AOKText} className="profileText" >{AOK.text}</p>
+                      <p style={style.Time} className="profileTime" >{this.timeSince(AOK.elapsedTime)}</p>
 
                       <hr/>
                     </li>

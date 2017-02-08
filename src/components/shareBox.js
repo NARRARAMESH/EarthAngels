@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../App.css';
+import './responsive.css';
 import Paper from 'material-ui/Paper';
 import FilterDrama from 'material-ui/svg-icons/image/filter-drama';
 // import PhotoCamera from 'material-ui/svg-icons/image/photo-camera';
@@ -141,13 +142,13 @@ overflowAlert () {
 renderButton () {
   if (this.remainingCharacters() < 0 || (this.textArea && this.textArea.value === "")) {
     return (
-      <button style={style.DisabledButton} onClick={this.post.bind(this)} disabled>
+      <button style={style.DisabledButton} onClick={this.post.bind(this)} className="postButton" disabled>
        <FilterDrama style={style.PostIcon} />
       </button>
     )
   } else {
     return (
-      <button style={style.PostButton} onClick={this.post.bind(this)}>
+      <button style={style.PostButton} className="postButton" onClick={this.post.bind(this)}>
       <FilterDrama style={style.PostIcon} />
       </button>
     )

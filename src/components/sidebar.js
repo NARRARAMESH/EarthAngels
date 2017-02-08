@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import base from '../config.js'
 import '../App.css';
+import './responsive.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import ContentCreate from 'material-ui/svg-icons/content/create';
@@ -19,7 +20,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const style = {
   Paper: {
-    zDepth: 1,
+    zDepth: 3,
     float: 'left',
     height: 1000,
     width: 220,
@@ -135,7 +136,7 @@ class Sidebar extends Component {
       completeTodos: [],
       notifications: [],
       open: false,
-      anchorEl: event.currentTarget,
+      anchorEl: {},
       alert: "No new notifications"
     }
   }
@@ -249,7 +250,7 @@ if (this.state.notifications.length === 0) {
     var notificationsCopy = this.state.notifications.slice(0)
     var notificationsReverse = notificationsCopy.reverse()
     return (
-      <div style={style.Paper} className="dashboardButtons">
+      <div style={style.Paper} className="sidebar">
         <MuiThemeProvider>
             <Paper
               style={style.Paper}
@@ -259,10 +260,10 @@ if (this.state.notifications.length === 0) {
               <h5 style={style.UserName}>{this.props.username}</h5>
             </Link>
 
-            <p style={style.AOK}>Acts of Kindness: {this.state.completeTodos.filter(item => item.complete === true).length} </p>
+            <p style={style.AOK} className="AOK">Acts of Kindness: {this.state.completeTodos.filter(item => item.complete === true).length} </p>
 
 
-            <div className="dashboardButtons">
+            <div className="sidebarButtons">
               <MuiThemeProvider>
                 <Link to="/feedofKindness" activeClassName="active">
                   <button className="sidebarButton" >
@@ -299,7 +300,7 @@ if (this.state.notifications.length === 0) {
                 </Link>
               </MuiThemeProvider>
 
-              <IconButton onClick={this.handleTouchTap.bind()} tooltip="notifications" tooltipPosition="bottom-right">
+              <IconButton className="notifications" onClick={this.handleTouchTap.bind()} tooltip="notifications" tooltipPosition="bottom-right">
                 <Checkbox
                   checked={true}
                   checkedIcon={<ActionFavorite />}
@@ -308,7 +309,7 @@ if (this.state.notifications.length === 0) {
                 />
               </IconButton>
 
-              <Link style={style.Link} className="link" to={'/chats'} activeClassName="active">
+              <Link style={style.Link} className="chatIcon" to={'/chats'} activeClassName="active">
                 <IconButton iconStyle={style.ChatIcon}>
                   <Chat />
                 </IconButton>

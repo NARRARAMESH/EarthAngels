@@ -1,0 +1,261 @@
+/*****************************************************************MOBILE*/
+
+@media screen and (max-width: 400px) {
+  .App {
+    z-index: 1800
+  }
+
+  /*******************************************FEED*/
+  .feed {
+    width: 350px !important;
+  }
+
+  ::-webkit-input-placeholder {
+    font-size: 16px !important;
+  }
+
+  .love {
+    margin-left: 230px !important;
+
+  }
+  .postButton {
+    margin-left: 270px !important;
+
+  }
+  .likeCount {
+    margin-left: 200px !important;
+  }
+
+  .deleteButton {
+    margin-left: -300px !important;
+  }
+
+
+  /*****************************************SIDEBAR*/
+  .sidebarButtons {
+    margin-top: -60px !important;
+  }
+
+  .AOK {
+    margin-top: -20px !important;
+  }
+
+  .notifications {
+    margin-top: -20px !important;
+  }
+
+  .chatIcon {
+    margin-top: 10px !important;
+  }
+
+  .sidebar {
+    z-index: 1500
+  }
+
+  /******************************************EVENTS*/
+    .container {
+      flex-direction: column !important;
+      margin: auto !important;
+      display: block !important;
+      width: 100% !important;
+    }
+
+    .events {
+      margin-left: 0px !important;
+      margin-top: 20px !important;
+      width: 100% !important;
+    }
+
+    .title {
+      margin-left: -35px !important;
+      width: 10px !important;
+    }
+
+    .eventList {
+      display: block !important;
+      margin: auto !important;
+      width: 100% !important;
+      margin-top: 20px !important;
+    }
+
+    .eventFields {
+      width: 100% !important;
+      margin-left: -10px !important;
+    }
+
+    .eventInputs {
+      width: 70% !important;
+    }
+
+    .dateInput {
+      margin-left: -30px !important;
+    }
+
+    .eventButton {
+      margin-left: 130px !important;
+    }
+
+    .attendButton {
+      margin-left: -60px !important;
+    }
+
+    /*************************************EVENTFULL*/
+
+    .container {
+      flex-direction: column !important;
+    }
+
+    .eventFull {
+      margin-top: 20px !important;
+      margin-left: 0px !important;
+      width: 100% !important;
+    }
+
+    .attendees {
+      width: 100% !important;
+      margin-top: 40px !important;
+      margin-left: 0px !important;
+    }
+
+    .MapBox {
+      margin-left: -40px !important;
+      width: 100% !important;
+      margin-top: -75px !important;
+    }
+
+    .MapDiv: {
+      width: 100% !important;
+      margin-top: 125px !important;
+      margin-left: 0px !important;
+    }
+
+    .createEventClose {
+      margin-left: 310px !important;
+    }
+
+
+/*************************************PROFILE*/
+    .profile {
+      display: block !important;
+      width: 85% !important;
+      margin: auto !important;
+      margin-top: -30px !important;
+    }
+
+    .header {
+      width: 100% !important;
+    }
+
+    .profileTime {
+      margin-left: 230px !important;
+      font-size: 10px !important;
+
+    }
+
+    .profileText {
+      margin-left: 5px !important;
+      /*marginBottom: -22,*/
+      font-size: 16px !important;
+    }
+
+    .ChatButton {
+      width: 35px !important;
+      height: 35px !important;
+      margin-bottom: 0px !important;
+      margin-right: -600px !important;
+    }
+
+    /*************************************CHATS*/
+
+    .chatDashboard {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .chat {
+      margin-top: 20px !important;
+      margin-left: 0px !important;
+      width: 100% !important;
+      margin-bottom: 20px !important;
+    }
+
+    .deleteButton {
+      margin-left: -400px !important;
+    }
+
+    .chatList {
+      margin-top: 10px !important;
+      width: 100% !important;
+      height: 270px !important;
+    }
+
+    /***********************************JOURNAL*/
+
+    .journal {
+      width: 100% !important;
+    }
+
+    .journalExpandClose {
+      margin-left: 310px !important;
+    }
+
+    .journalExpandText {
+      margin-right: 330px !important;
+    }
+
+    .journalTextArea {
+      width: 320px !important;
+      height: 400px !important;
+    }
+
+    .journalArchive {
+      margin-top: 40px !important;
+      width: 90% !important;
+      margin-left: 15px !important;
+    }
+
+    .journalTitle {
+      width: 270px !important;
+      margin-left: 20px !important;
+    }
+
+
+}
+
+
+
+
+/*****************************************************************TABLET*/
+@media screen and (max-width: 1000px) {
+  .container {
+    flex-direction: column !important;
+  }
+  .paper {
+    margin-left: 25px !important;
+    width: 400px !important;
+  }
+
+  .title {
+    margin-left: -35px !important;
+    width: 100% !important;
+  }
+
+
+  /*************************************PROFILE*/
+  .profile {
+    display: block !important;
+    width: 90% !important;
+    margin: auto !important;
+    /*margin-left: 0px !important;*/
+    margin-top: -30px !important;
+  }
+
+  .header {
+    width: 100% !important;
+  }
+
+
+
+
+
+}

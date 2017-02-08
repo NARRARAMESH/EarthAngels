@@ -62,6 +62,7 @@
     "react-infinite-calendar": "^1.2.2",
     "react-infinite-scroll-component": "^2.0.1",
     "react-load": "^0.1.8",
+    "react-responsive": "^1.2.6",
     "react-router": "^3.0.2",
     "react-tap-event-plugin": "^2.0.1",
     "render-if": "^0.1.1"

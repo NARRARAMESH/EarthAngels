@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
 import base from '../config.js'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -66,7 +67,7 @@ class EventList extends Component {
       <div>
 
       <MuiThemeProvider>
-          <Paper style={style.EventList} zDepth={2}>
+          <Paper style={style.EventList} className="eventList" zDepth={2}>
               <AppBar
                 title="My Events"
                 style={style.AppBar}

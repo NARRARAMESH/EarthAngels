@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import base from '../config.js'
+import base from '../config.js';
 import '../App.css';
+import './responsive.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -16,12 +17,12 @@ const style = {
   Div: {
     display: 'block',
     margin: 'auto',
-    marginRight: 250,
     marginTop: 20,
+    marginBottom: 50,
+    marginRight: 260,
     borderStyle: 'solid',
     borderWidth: .5,
-    width: '50%',
-    marginBottom: 50
+    width: '50%'
   },
   CountText: {
     fontFamily: 'Josefin Sans',
@@ -38,7 +39,8 @@ const style = {
     marginLeft: 645
   },
   Dialog: {
-    width: 700
+    width: 700,
+    zIndex: 1800,
   },
   Menu: {
     backgroundColor: '#1C3285',
@@ -63,8 +65,8 @@ const style = {
   },
   Title: {
     backgroundColor: '#1C3285',
-    width: 300,
-    marginLeft: 80,
+    width: 400,
+    marginLeft: 30,
     marginBottom: 5,
     color: 'white',
     opacity: .95,
@@ -106,6 +108,7 @@ class JournalArchive extends Component {
   expandEntry (clickedEntry) {
     var entry = this.state.archive.filter(entry => entry === clickedEntry)
       this.setState({ dialog: !this.state.dialog, entry: entry[0] })
+    this.props.toggleJournal()
   }
 
   closeEntry = () => this.setState({ dialog: !this.state.dialog })
@@ -122,8 +125,8 @@ class JournalArchive extends Component {
     var archiveCopy = this.state.archive.slice(0)
     var archiveReverse = archiveCopy.reverse()
     return (
-      <div style={style.Div}>
-      <h3 style={style.Title}>Archive</h3>
+      <div style={style.Div} className="journalArchive">
+      <h3 style={style.Title} className="journalTitle">Archive</h3>
       <span style={style.CountText}>{this.state.archive.length} entries</span>
 
       <Card style={style.Card}>
@@ -156,7 +159,7 @@ class JournalArchive extends Component {
             open={this.state.dialog}>
             <div style={style.Menu}>
               <IconButton iconStyle={style.CloseButton} onTouchTap={this.closeEntry}>
-                <Close />
+                <Close className="journalExpandClose"/>
               </IconButton>
             </div>
             <InfiniteScroll
@@ -164,7 +167,7 @@ class JournalArchive extends Component {
               endMessage={<Favorite/>}
               loader={<h4>Loading...</h4>}>
             <div style={style.EntryTextDiv}>
-              <p style={style.EntryText}>{this.state.entry.text}</p>
+              <p style={style.EntryText} className="journalExpandText">{this.state.entry.text}</p>
             </div>
             </InfiniteScroll>
           </Dialog>

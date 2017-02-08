@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
+import './responsive.css';
 import { Link } from 'react-router'
 import Paper from 'material-ui/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -87,7 +88,7 @@ class Attendees extends Component {
     console.log('this.state.attending is', this.state.attending)
     return (
       <div>
-        <Paper style={style.Paper}>
+        <Paper style={style.Paper} className="attendees">
           <AppBar
             title="Attendees"
             style={style.AppBar}

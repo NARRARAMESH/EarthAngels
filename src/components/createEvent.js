@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
 import base from '../config.js'
 import axios from 'axios'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -161,23 +162,24 @@ class CreateEvent extends Component {
         <MuiThemeProvider>
             <Dialog
               contentStyle={style.Dialog}
+              className="creatEvent"
               open={this.props.dialog}>
-              <div  style={style.Menu}>
+              <div style={style.Menu}>
                 <IconButton iconStyle={style.CloseButton} onTouchTap={this.props.toggleDialog}>
-                  <Close />
+                  <Close className="createEventClose" />
                 </IconButton>
-
               </div>
-                  <input
+
+              <div className="eventFields">
+                  <input style={style.TextField1} className="eventInputs"
                    ref={input => this.title = input}
-                   style={style.TextField1}
                    placeholder="Event title"/>
 
-                  <input style={style.TextArea}
+                  <input style={style.TextArea} className="eventInputs"
                    ref={input => this.desc = input}
                    placeholder="Description . . ."/>
 
-                   <div style={style.TimeDiv}>
+                   <div style={style.TimeDiv} className="eventInputs">
                      <SelectField
                        value={this.state.time}
                        onChange={this.handleTimeChange}
@@ -213,18 +215,21 @@ class CreateEvent extends Component {
 
                    <div style={style.DatePicker}>
                      <DatePicker
+                      className="dateInput"
                       selected={this.state.startDate}
                       onChange={this.handleDateChange}
                       ref={input => this.date = input}
                      />
                   </div>
 
-                 <input
+                 <input className="eventInputs"
                   ref={input => this.location = input}
                   style={style.TextField5}
                   placeholder="Location address"/>
-              <button style={style.Button} onClick={this.createEvent.bind(this)}>Create</button>
 
+              <button style={style.Button} className="eventButton" onClick={this.createEvent.bind(this)}>Create</button>
+
+            </div>
             </Dialog>
         </MuiThemeProvider>
 
