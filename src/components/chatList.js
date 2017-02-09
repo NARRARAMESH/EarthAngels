@@ -12,7 +12,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const style = {
   Paper: {
-    marginTop: -730,
+    marginTop: -90,
     width: 300,
     height: 1025,
     float: 'right'
@@ -92,7 +92,7 @@ class ChatList extends Component {
 
 
             <InfiniteScroll
-              height={300}
+              height={500}
               endMessage={<Favorite />}
               loader={<h4>Loading...</h4>}>
 

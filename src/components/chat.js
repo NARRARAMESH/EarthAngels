@@ -18,12 +18,13 @@ const style = {
     justifyContent: 'center'
   },
   Chat: {
-    display: 'block',
-    margin: 'auto',
+    // display: 'block',
+    // margin: 'auto',
     backgroundColor: 'white',
     width: 500,
     height: 600,
     marginTop: 40,
+    marginLeft: 200,
   },
   Header: {
     height: 40,

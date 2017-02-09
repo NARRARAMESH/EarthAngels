@@ -27,10 +27,8 @@ const style = {
     fontSize: 24
   },
   SaveButton: {
-    display: 'block',
     backgroundColor: '#36cee2',
     border: 'none',
-    margin: 'auto',
     color: 'white',
     width: 40,
     height: 40,
@@ -122,7 +120,7 @@ saveEntry () {
               />
 
                 <IconButton iconStyle={style.SaveButton} tooltip="save" tooltipPosition="top-right">
-                  <Save onClick={this.saveEntry.bind(this)}/>
+                  <Save onClick={this.saveEntry.bind(this)} className="saveButton"/>
                 </IconButton>
 
                 <JournalArchive uid={this.props.uid} toggleJournal={this.props.toggleJournal}/>

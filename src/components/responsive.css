@@ -173,10 +173,10 @@
     }
 
     .chat {
-      margin-top: 20px !important;
+      margin-top: -900px !important;
       margin-left: 0px !important;
       width: 100% !important;
-      margin-bottom: 20px !important;
+      margin-bottom: 0px !important;
     }
 
     .deleteButton {
@@ -184,9 +184,12 @@
     }
 
     .chatList {
-      margin-top: 10px !important;
-      width: 100% !important;
-      height: 270px !important;
+      width: 0% !important;
+      height: 0% !important;
+    }
+
+    .chatSearch {
+      margin-top: -10px !important;
     }
 
     /***********************************JOURNAL*/
@@ -217,6 +220,10 @@
     .journalTitle {
       width: 270px !important;
       margin-left: 20px !important;
+    }
+
+    .saveButton {
+      margin-left: 0px !important;
     }
 
 

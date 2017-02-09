@@ -81,9 +81,10 @@ class ChatDashboard extends Component {
 
     return (
       <div style={style.Component} className="chatDashboard">
-            <div style={style.InputDiv}>
+            <div style={style.InputDiv} className="chatSearch">
               <MuiThemeProvider>
                 <AutoComplete
+
                   floatingLabelText="Search for an Angel"
                   filter={AutoComplete.fuzzyFilter}
                   dataSource={this.state.usernames}
@@ -96,8 +97,9 @@ class ChatDashboard extends Component {
                 <ChatBubble style={style.ChatButton} />
               </MuiThemeProvider>
             </div>
-            {childrenWithProps}
             <ChatList uid={this.props.uid}/>
+            {childrenWithProps}
+
 
       </div>
     )
