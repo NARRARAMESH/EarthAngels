@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import base from '../config.js'
+import base from '../config.js';
 import '../App.css';
+import './responsive.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -9,25 +10,23 @@ import Favorite from 'material-ui/svg-icons/action/favorite';
 import Dialog from 'material-ui/Dialog';
 import Close from 'material-ui/svg-icons/navigation/close';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Delete from 'material-ui/svg-icons/action/delete';
 
 
 const style = {
   Div: {
     display: 'block',
     margin: 'auto',
-    marginRight: 250,
     marginTop: 20,
+    marginBottom: 50,
+    marginRight: 260,
     borderStyle: 'solid',
     borderWidth: .5,
-    width: '50%',
-    marginBottom: 50
+    width: '50%'
   },
   CountText: {
     fontFamily: 'Josefin Sans',
     fontSize: 16,
-  },
-  Header: {
-    marginBottom: -5
   },
   Card: {
     marginTop: 15
@@ -41,6 +40,7 @@ const style = {
   },
   Dialog: {
     width: 700,
+    zIndex: 1800,
   },
   Menu: {
     backgroundColor: '#1C3285',
@@ -60,7 +60,26 @@ const style = {
     textJustify: 'inter-word',
     fontFamily: 'Josefin Sans',
     lineHeight: 1.4,
-    color: 'black'
+    color: 'black',
+    // whiteSpace: 'pre'
+  },
+  Title: {
+    backgroundColor: '#1C3285',
+    width: 400,
+    marginLeft: 30,
+    marginBottom: 5,
+    color: 'white',
+    opacity: .95,
+    borderRadius: 5,
+    padding: 10,
+    boxShadow: '1px 1.5px 2px  gray',
+  },
+  Delete: {
+    color: '#f79e9e',
+    width: 18,
+    height: 18,
+    marginLeft: -20,
+    marginBottom: 0
   }
 };
 
@@ -76,34 +95,38 @@ class JournalArchive extends Component {
 }
 
   componentWillReceiveProps(props) {
-    console.log('this.props.uid is', this.props.uid)
-    base.listenTo(`users/${this.props.uid}/journal`, {
+    base.syncState(`users/${this.props.uid}/journal`, {
       context: this,
+      state: 'archive',
       asArray: true,
-      then: (data) => {
-        this.setState({
-          archive: data
-        })
+      queries: {
+      orderByChild: 'timeStamp',
       }
     })
   }
 
   expandEntry (clickedEntry) {
     var entry = this.state.archive.filter(entry => entry === clickedEntry)
-    // .then(() => {
-    console.log('entry is', entry)
       this.setState({ dialog: !this.state.dialog, entry: entry[0] })
-      console.log('this.state.entry is', this.state.entry)
-    // })
+    this.props.toggleJournal()
   }
 
   closeEntry = () => this.setState({ dialog: !this.state.dialog })
 
+  deleteEntry(clickedEntry) {
+    var newEntryArray = this.state.archive.filter(entry => entry !==clickedEntry)
+    this.setState({
+      archive: newEntryArray
+    })
+  }
+
 
   render() {
+    var archiveCopy = this.state.archive.slice(0)
+    var archiveReverse = archiveCopy.reverse()
     return (
-      <div style={style.Div}>
-      <h3 style={style.Header}>Archive</h3>
+      <div style={style.Div} className="journalArchive">
+      <h3 style={style.Title} className="journalTitle">Archive</h3>
       <span style={style.CountText}>{this.state.archive.length} entries</span>
 
       <Card style={style.Card}>
@@ -112,14 +135,16 @@ class JournalArchive extends Component {
         endMessage={<Favorite />}
         loader={<h4>Loading...</h4>}>
       <ul style={style.List}>
-        {this.state.archive.map((entry, index) => {
+        {archiveReverse.map((entry, index) => {
             return <li key={index}>
-                      <IconButton tooltip="expand" tooltipPosition="top-center">
-                        <ImportContacts onClick={this.expandEntry.bind(this, entry)}/>
-                      </IconButton>
-
-                        <p>{entry.date}</p>
+                        <IconButton onClick={this.expandEntry.bind(this, entry)} tooltip="expand" tooltipPosition="top-center" >
+                          <ImportContacts  />
+                        </IconButton>
+                        <p><em>{entry.date}</em></p>
                         <p>{(entry.text).substr(0, 50)}</p>
+                        <IconButton iconStyle={style.Delete}>
+                          <Delete  onClick={this.deleteEntry.bind(this, entry)}/>
+                        </IconButton>
                         <hr />
                    </li>
                  })
@@ -134,17 +159,17 @@ class JournalArchive extends Component {
             open={this.state.dialog}>
             <div style={style.Menu}>
               <IconButton iconStyle={style.CloseButton} onTouchTap={this.closeEntry}>
-                <Close />
+                <Close className="journalExpandClose"/>
               </IconButton>
             </div>
             <InfiniteScroll
               height={600}
               endMessage={<Favorite/>}
               loader={<h4>Loading...</h4>}>
-            <p style={style.EntryText}>{this.state.entry.text}</p>
+            <div style={style.EntryTextDiv}>
+              <p style={style.EntryText} className="journalExpandText">{this.state.entry.text}</p>
+            </div>
             </InfiniteScroll>
-
-
           </Dialog>
       </MuiThemeProvider>
 

@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import '../App.css';
 import base from '../config.js'
 import Delete from 'material-ui/svg-icons/action/delete';
+import Check from 'material-ui/svg-icons/navigation/check';
 import Toggle from 'material-ui/Toggle';
-import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
-// import CloudDownload from 'material-ui/svg-icons/file/cloud-download';
-// import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
-// import TextField from 'material-ui/TextField';
-
+import Snackbar from 'material-ui/Snackbar';
 
 const style = {
   Text: {
@@ -26,11 +23,11 @@ const style = {
     marginTop: 10
   },
   ItemText: {
-    fontSize: 20,
+    fontSize: 22,
     lineHeight: 1.4,
-    marginTop: 8,
     marginBottom: -7,
-    paddingRight: 30
+    paddingRight: 30,
+    marginTop: 20
   },
   Icons: {
     color: '#1C3285',
@@ -40,26 +37,24 @@ const style = {
   Toggle: {
     paddingTop: 9,
     paddingBottom: 3,
-    marginLeft: 250,
+    marginRight: -230,
   },
   Delete: {
     color: '#f79e9e',
     width: 18,
     height: 18,
-    paddingBottom: 10,
-    marginRight: -260
-
+    paddingBottom: 20,
+    marginRight: -240
   },
   Check: {
-    marginTop: -7,
-    width: 34,
-    height: 34,
-  },
-  CheckLabel: {
-    fontSize: 12,
-    marginLeft: -85,
-    marginTop: -10,
-    color: '#ccc'
+    color: 'white',
+    width: 40,
+    height: 40,
+    backgroundColor: '#adadf4',
+    borderRadius: 120,
+    boxShadow: '1px 1.5px 1.5px  gray',
+    marginBottom: -20,
+    marginLeft: -50,
   },
   Help: {
     color: '#ccc',
@@ -68,6 +63,9 @@ const style = {
     lineHeight: 1.4,
     fontSize: 16,
     letterSpacing: .5
+  },
+  Snackbar: {
+    backgroundColor: '#adadf4',
   }
 }
 
@@ -76,10 +74,12 @@ class ToDoList extends Component {
   constructor () {
     super()
     this.state = {
-      todos: []
+      todos: [],
+      open: false,
+      // inputValue: '',
+      // editing: false,
     }
   }
-
 
   componentWillReceiveProps(props) {
     if (this.props.uid === null) {
@@ -103,7 +103,7 @@ class ToDoList extends Component {
     let item = {
       text: this.input.value.trim(),
       complete: false,
-      public: false
+      public: false,
     }
     let newItemArray = this.state.todos.concat(item)
     this.setState({
@@ -121,27 +121,62 @@ class ToDoList extends Component {
     })
   }
 
+  // editItem (clickedItem) {
+  //   var item = this.state.todos.filter(item => item === clickedItem)
+  //   console.log('clickedItem is', clickedItem)
+  //   base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
+  //     data: {text: this.pTag.index.innerText}
+  //   })
+  // }
 
   completeItem(clickedItem) {
+    var elapsedTime = new Date() + ''
+    var timeStamp = Date.now()
     var item = this.state.todos.filter(item => item === clickedItem)
     base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
-      data: {complete: true},
+      data: {complete: true, elapsedTime: elapsedTime},
       then: () => {
         if (item[0].public === true) {
-        base.update(`feed/${item[0].key}`, {
-          data: {username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: ""}
+        this.showMessage()
+        base.update(`feed/${timeStamp}`, {
+          data: {uid: this.props.uid, username: this.props.username, avatar: this.props.avatar, text: item[0].text, likeCount: 0, timeStamp: timeStamp, elapsedTime: elapsedTime}
       })
      }
    }
   })
+  base.update(`users/${this.props.uid}/todos/${item[0].key}`, {
+    data: {elapsedTime: elapsedTime}
+  })
 }
-
 
   deleteItem(clickedItem) {
     var newList = this.state.todos.filter(item => item !==clickedItem)
     this.setState({
       todos: newList
     })
+  }
+
+  showMessage = () => {
+    this.setState({
+      open: true
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false
+    });
+  };
+
+  editingState () {
+    this.setState({
+      editing: true
+    });
+  }
+
+  startEditing (text) {
+    if (this.state.editing === true)
+    return <input value={text}/>
   }
 
 
@@ -157,70 +192,40 @@ class ToDoList extends Component {
                   if (item.complete === false) {
                   return <li style={style.Items} key={index}>
                             <div>
-                                <Toggle style={style.Toggle} onToggle={this.toggleItem.bind(this, item)} />
-                                <Checkbox iconStyle={style.Check} onCheck={this.completeItem.bind(this, item)} label="✓ to complete" labelStyle={style.CheckLabel}/>
+                                <IconButton style={style.Toggle} tooltip="make post public" tooltipPosition="bottom-center">
+                                <Toggle  onToggle={this.toggleItem.bind(this, item)} />
+                                </IconButton>
+
+                                <IconButton iconStyle={style.Check}>
+                                  <Check  onClick={this.completeItem.bind(this, item)} />
+                                </IconButton>
+
                                 <p style={style.ItemText}>{item.text}</p>
+
+
                                 <IconButton iconStyle={style.Delete}>
                                   <Delete  onClick={this.deleteItem.bind(this, item)}/>
                                 </IconButton>
                             </div>
     					           </li>
+                  } else {
+                    return null
                   }
              })
             }
     				</ul>
             <p style={style.Help}>To share your tasks publicly, turn toggle on before marking task complete</p>
 
+        <Snackbar
+          bodyStyle={style.Snackbar}
+          open={this.state.open}
+          message="Posted to public feed"
+          autoHideDuration={2000}
+          onRequestClose={this.handleRequestClose}
+        />
       </div>
     )
   }
 }
 
-
 export default ToDoList;
-
-
-// <footer className="footer">
-//   <span className="todo-count"><strong>{this.state.todos.length}</strong> item{this.state.itemCount} left</span>
-//   <ul className="filters">
-//     <li>
-//       <a className="selected" href="#/">All</a>
-//     </li>
-//     <li>
-//       <a href="#/active">Active</a>
-//     </li>
-//     <li>
-//       <a href="#/completed">Completed</a>
-//     </li>
-//   </ul>
-//   <button hidden={this.state.todos.length == 0} className="clear-completed">Clear completed</button>
-// </footer>
-
-
-
-// <div>
-//   <input onClick={this.completeItem.bind(this)} />
-//
-//   <label
-//   ref={label => this.label = label}
-//   onDoubleClick={this.editItem.bind(this)}>
-//   {item.text}
-//   </label>
-//
-//   <button ref={button => this.button = button}
-//     onClick={this.deleteItem.bind(this, item)}className="destroy">
-//   </button>
-// </div>
-// <input className="edit" value={item.text}/>
-
-
-//
-// <IconButton iconStyle={style.Icons} tooltip="public items are shared to feed">
-//   <CloudDownload onClick={this.archiveItem.bind(this, item)}/>
-// </IconButton>
-//
-// <IconButton iconStyle={style.Icons} tooltip="share">
-//   <CloudUpload onClick={this.shareItem.bind(this, item)}/>
-// </IconButton>
-
-// hintText="My acts of kindness are..."

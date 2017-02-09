@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './responsive.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -7,13 +8,16 @@ import IconButton from 'material-ui/IconButton';
 import ToDoList from './toDoList.js';
 import Close from 'material-ui/svg-icons/navigation/close';
 
-
-
 const style = {
+  Component: {
+    zIndex: 1505
+  },
   AppBar: {
     fontFamily: "Cinzel Decorative",
     fontWeight: 'bolder',
-    wordSpacing: 10
+    wordSpacing: 10,
+    zIndex: 1505
+
   },
   CloseButton: {
     color: 'white',
@@ -22,6 +26,9 @@ const style = {
     height: 25,
     borderRadius: 120,
     marginRight: -20
+  },
+  ToDoDrawer: {
+    zIndex: 1550
   }
 };
 
@@ -36,10 +43,10 @@ class ToDo extends Component {
 
   render() {
     return (
-      <div className="todo">
+      <div className="todo" style={style.Component}>
         <MuiThemeProvider>
             <Drawer
-                className="toDoList"
+                containerStyle={style.ToDoDrawer}
                 docked={true}
                 width={350}
                 open={this.props.toDo}
@@ -49,6 +56,7 @@ class ToDo extends Component {
               <AppBar
                 title="Today's To-Dos"
                 style={style.AppBar}
+                className="toDoList"
                 showMenuIconButton={false}
               >
                 <IconButton iconStyle={style.CloseButton}>

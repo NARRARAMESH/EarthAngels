@@ -1,25 +1,30 @@
 import React, {Component} from 'react';
 import '../App.css';
-import base from '../config.js'
+import './responsive.css';
 import Paper from 'material-ui/Paper';
 import FilterDrama from 'material-ui/svg-icons/image/filter-drama';
-import IconButton from 'material-ui/IconButton';
 // import PhotoCamera from 'material-ui/svg-icons/image/photo-camera';
 
 
 const style = {
   Div: {
     backgroundColor: '#edfbff',
-    height: 190
+    height: 210,
+  },
+  LogoutDiv: {
+    backgroundColor: '#1C3285',
+    height: 210,
+    padding: 20,
+    paddingBottom: 60
   },
   Input: {
     display: 'block',
-    marginLeft: '3.3%',
+    marginLeft: '3.8%',
     float: 'left',
     width: '90%',
-    height: 60,
+    height: 80,
     marginTop: 50,
-    marginBottom: 35
+    marginBottom: 15
   },
   Characters: {
     fontSize: 17,
@@ -31,34 +36,63 @@ const style = {
     fontSize: 18,
     textAlign: 'center',
     padding: 10,
-    marginBottom: -35
+    marginBottom: -35,
+    backgroundColor: '#f79e9e'
   },
   PostButton: {
-    color: 'white',
     display: 'block',
     backgroundColor: '#36cee2',
     border: 'none',
-    marginTop: -45,
-    marginLeft: 220,
+    marginTop: -30,
+    marginLeft: 500,
+    marginBottom: 200,
     width: 55,
     height: 30,
     borderRadius: 11,
     boxShadow: '1px 1.5px 2px  gray'
   },
-  // PhotoButton: {
-  //   marginTop: -18,
-  //   marginLeft: -3,
-  //   color: 'white',
-  //   display: 'block',
-  //   backgroundColor: '#36cee2',
-  //   border: 'none',
-  //   float: 'right',
-  //   width: 55,
-  //   height: 30,
-  //   borderRadius: 11,
-  //   fontSize: 10,
-  //   boxShadow: '1px 1.5px 2px  gray'
-  // }
+  DisabledButton: {
+    display: 'block',
+    backgroundColor: '#ccc',
+    border: 'none',
+    marginTop: -30,
+    marginLeft: 500,
+    marginBottom: 200,
+    width: 55,
+    height: 30,
+    borderRadius: 11,
+    boxShadow: '1px 1.5px 2px  gray'
+  },
+  PostIcon: {
+    color: 'white'
+  },
+  PhotoButton: {
+    display: 'block',
+    backgroundColor: '#36cee2',
+    border: 'none',
+    marginTop: -30,
+    marginLeft: 400,
+    marginBottom: 200,
+    width: 55,
+    height: 30,
+    borderRadius: 11,
+    boxShadow: '1px 1.5px 2px  gray'
+  },
+  Wings: {
+    height: 200,
+    width: 280,
+  },
+  Tagline: {
+    color: 'white',
+    textAlign: 'center',
+    marginLeft: 0,
+    marginTop: 10,
+    fontFamily: 'Cinzel Decorative',
+    paddingBottom: 20
+  },
+  Uploader: {
+    marginTop: -300
+  }
 };
 
 class ShareBox extends Component {
@@ -66,7 +100,13 @@ class ShareBox extends Component {
     super()
     this.state = {
       text: "",
-      photoAdded: false
+      photoAdded: false,
+      button: false,
+      username: '',
+      avatar: '',
+      isUploading: false,
+      progress: 0,
+      avatarURL: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.togglePhoto = this.togglePhoto.bind(this)
@@ -83,9 +123,9 @@ handleChange (event) {
 
 remainingCharacters () {
   if (this.state.photoAdded) {
-    return 140 - 23 - this.state.text.length;
+    return 150 - 23 - this.state.text.length;
   } else {
-    return 140 - this.state.text.length;
+    return 150 - this.state.text.length;
   }
 }
 
@@ -99,56 +139,75 @@ overflowAlert () {
   }
 }
 
-
-post () {
-  console.log("username is", this.props.username)
-  if (this.textArea.value === "") {
-    alert('Please type about your kindness')
+renderButton () {
+  if (this.remainingCharacters() < 0 || (this.textArea && this.textArea.value === "")) {
+    return (
+      <button style={style.DisabledButton} onClick={this.post.bind(this)} className="postButton" disabled>
+       <FilterDrama style={style.PostIcon} />
+      </button>
+    )
   } else {
-    let post= {
-      username: this.props.username,
-      text: this.textArea.value.trim(),
-      avatar: this.props.avatar,
-      image: "",
-      likeCount: "",
-      timeStamp: ""
-    }
-  base.update(`feed/${post.username}`, {
-    data: post
-  })
-  this.textArea.value = ""
- }
+    return (
+      <button style={style.PostButton} className="postButton" onClick={this.post.bind(this)}>
+      <FilterDrama style={style.PostIcon} />
+      </button>
+    )
+  }
 }
 
-    render() {
-        return (
-          <div style={style.Div}>
+post () {
+  var elapsedTime = new Date() + ''
+  var timeStamp = Date.now()
+    let post = {
+    uid: this.props.uid,
+    username: this.props.username,
+    text: this.textArea.value.trim(),
+    avatar: this.props.avatar,
+    image: "",
+    likeCount: 0,
+    timeStamp: timeStamp,
+    elapsedTime: elapsedTime
+  }
+  this.textArea.value = ""
+  this.props.newArray(post)
+}
 
+  renderInput () {
+    if (this.props.uid === "") {
+      return (
+        <div style={style.LogoutDiv}>
+          <img style={style.Wings} src={require('../images/ea.png')} role="presentation" />
+          <p style={style.Tagline}>A social network for acts of kindness</p>
+        </div>
+      )
+    } else {
+      return (
+            <div style={style.Div}>
              {this.overflowAlert()}
-
              <textarea
              style={style.Input}
              onChange={this.handleChange}
              ref={textArea => this.textArea = textArea}
              placeholder="👐  Share about Your Kindess . . . 👐"
              />
-
              <span style={style.Characters}>{this.remainingCharacters()}</span>
+             {this.renderButton()}
 
-             <IconButton
-                iconStyle={style.PostButton}
-                tooltipPosition="top-center"
-                tooltip="post"
-             >
-                  <FilterDrama onClick={this.post.bind(this)}/>
-             </IconButton>
+
+
+           </div>
+      )
+    }
+  }
+
+
+    render() {
+        return (
+          <div>
+              {this.renderInput()}
           </div>
         )
     }
 }
 
 export default ShareBox;
-
-// <IconButton iconStyle={style.PhotoButton} tooltip="add photo" tooltipPosition="top-center"><PhotoCamera /></IconButton>
-
-// disabled={this.remainingCharacters() === 140} // for post button

@@ -76,7 +76,7 @@ p {
 }
 
 
-h2, h3, h4 {
+h1, h2, h3, h4 {
   color: #1C3285;
   font-family: 'Cinzel Decorative', cursive;
 }
@@ -86,6 +86,14 @@ input, select, textarea {
     padding-left: 15px;
     font-size: 24px;
     font-family: 'Josefin Sans', sans-serif;
+}
+
+.link:active {
+  color: #1C3285;
+}
+
+.link:visited {
+  color: #1C3285;
 }
 
 
